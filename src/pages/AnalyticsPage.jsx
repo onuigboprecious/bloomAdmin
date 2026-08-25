@@ -93,11 +93,11 @@ export const AnalyticsPage = () => {
             </div>
           </div>
           <h3 className="text-3xl font-black text-slate-900 font-mono mt-3">
-            {data ? data.totalTaps.toLocaleString() : '14,220'}
+            {data ? (data.totalTaps || 0).toLocaleString() : '0'}
           </h3>
-          <div className="flex items-center gap-1.5 text-xs text-emerald-700 mt-2 font-mono">
+          <div className="flex items-center gap-1.5 text-xs text-[#0088CC] mt-2 font-mono">
             <TrendingUp className="w-3.5 h-3.5" />
-            <span>+18.4% from last week</span>
+            <span>Live Scan Tracking</span>
           </div>
         </div>
 
@@ -110,7 +110,7 @@ export const AnalyticsPage = () => {
             </div>
           </div>
           <h3 className="text-3xl font-black text-slate-900 font-mono mt-3">
-            {data ? data.totalCardsProvisioned.toLocaleString() : '1,250'}
+            {data ? (data.totalCardsProvisioned || 0).toLocaleString() : '0'}
           </h3>
           <p className="text-xs text-slate-500 mt-2 font-mono">Hardware UIDs in circulation</p>
         </div>
@@ -124,7 +124,7 @@ export const AnalyticsPage = () => {
             </div>
           </div>
           <h3 className="text-3xl font-black text-slate-900 font-mono mt-3">
-            {data ? data.activeProfiles.toLocaleString() : '980'}
+            {data ? (data.activeProfiles || 0).toLocaleString() : '0'}
           </h3>
           <p className="text-xs text-slate-500 mt-2 font-mono">Linked digital identity profiles</p>
         </div>
@@ -138,7 +138,7 @@ export const AnalyticsPage = () => {
             </div>
           </div>
           <h3 className="text-3xl font-black text-slate-900 font-mono mt-3">
-            {data ? data.totalLeadsCaptured.toLocaleString() : '3,480'}
+            {data ? (data.leadsCaptured || data.totalLeadsCaptured || 0).toLocaleString() : '0'}
           </h3>
           <p className="text-xs text-purple-700/80 mt-2 font-mono">Contact exchanges completed</p>
         </div>
@@ -181,20 +181,10 @@ export const AnalyticsPage = () => {
 
         {/* Recharts Container */}
         <div className="h-80 w-full">
-          {data?.hourlyMetrics && (
+          {data?.hourlyMetrics && data.hourlyMetrics.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
               {chartType === 'area' ? (
                 <AreaChart data={data.hourlyMetrics} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="tapGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#0088CC" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#0088CC" stopOpacity={0.0} />
-                    </linearGradient>
-                    <linearGradient id="leadGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#7C3AED" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#7C3AED" stopOpacity={0.0} />
-                    </linearGradient>
-                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
                   <XAxis dataKey="hour" stroke="#64748B" fontSize={11} />
                   <YAxis stroke="#64748B" fontSize={11} />
@@ -214,8 +204,8 @@ export const AnalyticsPage = () => {
                     name="NFC Taps"
                     stroke="#0088CC"
                     strokeWidth={3}
-                    fillOpacity={1}
-                    fill="url(#tapGradient)"
+                    fillOpacity={0.15}
+                    fill="#0088CC"
                   />
                   <Area
                     type="monotone"
@@ -223,8 +213,8 @@ export const AnalyticsPage = () => {
                     name="Leads Captured"
                     stroke="#7C3AED"
                     strokeWidth={2}
-                    fillOpacity={1}
-                    fill="url(#leadGradient)"
+                    fillOpacity={0.15}
+                    fill="#7C3AED"
                   />
                 </AreaChart>
               ) : (
@@ -247,6 +237,12 @@ export const AnalyticsPage = () => {
                 </BarChart>
               )}
             </ResponsiveContainer>
+          ) : (
+            <div className="h-full w-full flex flex-col items-center justify-center border border-dashed border-slate-200 rounded-xl bg-slate-50">
+              <BarChart2 className="w-8 h-8 text-slate-300 mb-2" />
+              <p className="text-base font-bold text-slate-800">No data yet</p>
+              <p className="text-xs text-slate-500 mt-1">Tap metrics will appear here once NFC hardware is scanned.</p>
+            </div>
           )}
         </div>
       </div>
@@ -257,7 +253,7 @@ export const AnalyticsPage = () => {
           <h4 className="text-base font-bold text-slate-900 mb-1">Card Finish Popularity Distribution</h4>
           <p className="text-xs text-slate-500 mb-4">Hardware finish breakdown by total active cards</p>
           <div className="h-60 flex items-center justify-center">
-            {data?.finishDistribution && (
+            {data?.finishDistribution && data.finishDistribution.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -283,6 +279,12 @@ export const AnalyticsPage = () => {
                   />
                 </PieChart>
               </ResponsiveContainer>
+            ) : (
+              <div className="h-full w-full flex flex-col items-center justify-center border border-dashed border-slate-200 rounded-xl bg-slate-50">
+                <BarChart2 className="w-8 h-8 text-slate-300 mb-2" />
+                <p className="text-base font-bold text-slate-800">No data yet</p>
+                <p className="text-xs text-slate-500 mt-1">No hardware distribution data available yet.</p>
+              </div>
             )}
           </div>
         </div>

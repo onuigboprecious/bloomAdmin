@@ -228,8 +228,14 @@ export const OrdersPage = () => {
                 </tr>
               ) : filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="text-center py-8 text-slate-500 font-mono">
-                    No matching hardware orders found.
+                  <td colSpan="6" className="text-center py-12">
+                    <div className="flex flex-col items-center justify-center py-4">
+                      <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 mb-3 border border-slate-200">
+                        <PackageCheck className="w-6 h-6" />
+                      </div>
+                      <p className="text-base font-bold text-slate-800">No data yet</p>
+                      <p className="text-xs text-slate-500 mt-1 max-w-sm">No physical hardware orders have been placed yet.</p>
+                    </div>
                   </td>
                 </tr>
               ) : (

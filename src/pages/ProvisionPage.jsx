@@ -21,56 +21,33 @@ export const ProvisionPage = () => {
   const [batchSize, setBatchSize] = useState('10');
   const [customSize, setCustomSize] = useState('');
   const [hardwareType, setHardwareType] = useState('Card'); // 'Card' or 'Wristband'
-  const [finishStyle, setFinishStyle] = useState('Stealth Matte Black');
   const [loading, setLoading] = useState(false);
   const [provisionResult, setProvisionResult] = useState(null);
   const [selectedQrCard, setSelectedQrCard] = useState(null);
   const [toastMessage, setToastMessage] = useState(null);
   const [copiedUid, setCopiedUid] = useState(null);
 
-  const cardFinishes = [
-    { name: 'Stealth Matte Black', color: 'bg-slate-900 text-white border-slate-700' },
-    { name: 'Emerald Green', color: 'bg-emerald-100 text-emerald-800 border-emerald-300' },
-    { name: 'Sunset Amber', color: 'bg-amber-100 text-amber-800 border-amber-300' },
-    { name: 'Custom Wood', color: 'bg-amber-50 text-amber-900 border-amber-200' },
-    { name: 'Crystal Clear', color: 'bg-cyan-50 text-cyan-800 border-cyan-200' },
-  ];
-
-  const wristbandFinishes = [
-    { name: 'Silicone Sport Black', color: 'bg-slate-900 text-white border-slate-700' },
-    { name: 'Festival Woven Fabric', color: 'bg-purple-100 text-purple-800 border-purple-300' },
-    { name: 'Waterproof Glow Blue', color: 'bg-cyan-100 text-cyan-800 border-cyan-300' },
-    { name: 'Emerald Silicone Strap', color: 'bg-emerald-100 text-emerald-800 border-emerald-300' },
-    { name: 'Eco Leather Strap', color: 'bg-amber-100 text-amber-900 border-amber-300' },
-  ];
-
-  const activeFinishes = hardwareType === 'Card' ? cardFinishes : wristbandFinishes;
-  const fullFinishName = `${finishStyle} (${hardwareType})`;
+  const fullFinishName = hardwareType === 'Card' ? 'NFC Card' : 'NFC Wristband';
+  const effectiveCount = batchSize === 'custom' ? (parseInt(customSize, 10) || 0) : parseInt(batchSize, 10);
 
   const handleHardwareTypeChange = (type) => {
     setHardwareType(type);
-    if (type === 'Card') {
-      setFinishStyle('Stealth Matte Black');
-    } else {
-      setFinishStyle('Silicone Sport Black');
-    }
   };
 
   const handleGenerateBatch = async (e) => {
     e.preventDefault();
-    const count = batchSize === 'custom' ? parseInt(customSize, 10) : parseInt(batchSize, 10);
-    if (!count || count <= 0 || count > 500) {
+    if (!effectiveCount || effectiveCount <= 0 || effectiveCount > 500) {
       setToastMessage({ message: 'Please enter a valid batch size between 1 and 500', type: 'error' });
       return;
     }
 
     setLoading(true);
     try {
-      const res = await api.provisionBatch({ batchSize: count, finishName: fullFinishName, hardwareType });
+      const res = await api.provisionBatch({ batchSize: effectiveCount, finishName: fullFinishName, hardwareType });
       if (res.success) {
         setProvisionResult(res.data);
         setToastMessage({
-          message: `Successfully provisioned ${res.data.totalProvisioned} NFC ${hardwareType}s (${finishStyle})`,
+          message: `Successfully provisioned ${res.data.totalProvisioned} NFC ${hardwareType}s`,
           type: 'success',
         });
         confetti({
@@ -110,7 +87,7 @@ export const ProvisionPage = () => {
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `NFC-Batch-${hardwareType}-${finishStyle.replace(/\s+/g, '-')}-${Date.now()}.csv`;
+    link.download = `NFC-Batch-${hardwareType}-${Date.now()}.csv`;
     link.click();
     setToastMessage({ message: 'Downloaded Encoding CSV file', type: 'success' });
   };
@@ -124,11 +101,11 @@ export const ProvisionPage = () => {
         onClose={() => setToastMessage(null)}
       />
 
-      {/* Header Banner */}
-      <div className="relative overflow-hidden p-6 md:p-8 rounded-2xl bg-gradient-to-r from-white via-cyan-50/50 to-slate-50 border border-slate-200 shadow-sm">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      {/* Header Banner - Flat Solid Design */}
+      <div className="p-6 md:p-8 rounded-2xl bg-white border border-slate-200 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-100/80 border border-cyan-200 text-[#0088CC] text-xs font-mono mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-[#0088CC] text-xs font-mono mb-3">
               <Cpu className="w-3.5 h-3.5" />
               NFC HARDWARE PROVISIONING ENGINE
             </div>
@@ -151,58 +128,58 @@ export const ProvisionPage = () => {
         </div>
       </div>
 
-      {/* Batch Form Card */}
-      <div className="glass-panel p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
-        {/* Step 1: Select Form Factor (Card vs Wristband) */}
-        <div>
-          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-mono">
-            1. Select Hardware Form Factor (Card or Wristband)
-          </label>
-          <div className="grid grid-cols-2 gap-4 max-w-md">
-            <button
-              type="button"
-              onClick={() => handleHardwareTypeChange('Card')}
-              className={`p-4 rounded-xl border flex items-center justify-center gap-3 font-bold text-sm transition-all ${
-                hardwareType === 'Card'
-                  ? 'bg-cyan-50 border-[#0088CC] text-[#0088CC] shadow-sm ring-2 ring-[#0088CC]/30'
-                  : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              <CreditCard className="w-5 h-5" />
-              <span>Card</span>
-            </button>
+      {/* Batch Form Card - Perfectly Aligned 2-Column Grid */}
+      <div className="glass-panel rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <form onSubmit={handleGenerateBatch} className="divide-y divide-slate-200">
+          <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            {/* Step 1: Select Form Factor (Card vs Wristband) */}
+            <div className="space-y-3">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
+                1. Select Hardware Form Factor (Card or Wristband)
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleHardwareTypeChange('Card')}
+                  className={`p-4 rounded-xl border flex items-center justify-center gap-3 font-bold text-sm transition-all ${
+                    hardwareType === 'Card'
+                      ? 'bg-cyan-50 border-[#0088CC] text-[#0088CC] font-semibold'
+                      : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <CreditCard className="w-5 h-5" />
+                  <span>Card</span>
+                </button>
 
-            <button
-              type="button"
-              onClick={() => handleHardwareTypeChange('Wristband')}
-              className={`p-4 rounded-xl border flex items-center justify-center gap-3 font-bold text-sm transition-all ${
-                hardwareType === 'Wristband'
-                  ? 'bg-purple-50 border-purple-600 text-purple-700 shadow-sm ring-2 ring-purple-500/30'
-                  : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              <Watch className="w-5 h-5" />
-              <span>Wristband</span>
-            </button>
-          </div>
-        </div>
+                <button
+                  type="button"
+                  onClick={() => handleHardwareTypeChange('Wristband')}
+                  className={`p-4 rounded-xl border flex items-center justify-center gap-3 font-bold text-sm transition-all ${
+                    hardwareType === 'Wristband'
+                      ? 'bg-purple-50 border-purple-600 text-purple-700 font-semibold'
+                      : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <Watch className="w-5 h-5" />
+                  <span>Wristband</span>
+                </button>
+              </div>
+            </div>
 
-        <form onSubmit={handleGenerateBatch} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Step 2: Batch Size */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-mono">
+            <div className="space-y-3">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
                 2. Select Batch Quantity
               </label>
-              <div className="grid grid-cols-4 gap-2 mb-3">
+              <div className="grid grid-cols-4 gap-2">
                 {['10', '50', '100', 'custom'].map((size) => (
                   <button
                     key={size}
                     type="button"
                     onClick={() => setBatchSize(size)}
-                    className={`py-3 px-3 rounded-xl font-mono text-sm font-bold border transition-all ${
+                    className={`py-3.5 px-2 rounded-xl font-mono text-sm font-bold border transition-all text-center ${
                       batchSize === size
-                        ? 'bg-cyan-50 border-[#0088CC] text-[#0088CC] shadow-sm'
+                        ? 'bg-cyan-50 border-[#0088CC] text-[#0088CC]'
                         : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900'
                     }`}
                   >
@@ -218,44 +195,25 @@ export const ProvisionPage = () => {
                   onChange={(e) => setCustomSize(e.target.value)}
                   min="1"
                   max="500"
-                  className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-[#0088CC]"
+                  className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono text-sm focus:outline-none focus:border-[#0088CC] mt-2"
                 />
               )}
             </div>
-
-            {/* Step 3: Finish Style */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-mono">
-                3. Select {hardwareType} Style / Finish
-              </label>
-              <select
-                value={finishStyle}
-                onChange={(e) => setFinishStyle(e.target.value)}
-                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 font-medium text-sm focus:outline-none focus:border-[#0088CC] focus:ring-1 focus:ring-[#0088CC] transition-all"
-              >
-                {activeFinishes.map((f) => (
-                  <option key={f.name} value={f.name} className="bg-white text-slate-900">
-                    {f.name}
-                  </option>
-                ))}
-              </select>
-
-              {/* Finish Badge Preview */}
-              <div className="mt-3 flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-                <span className="text-xs text-slate-500">Selected Option:</span>
-                <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-slate-900 text-white font-mono">
-                  {hardwareType}: {finishStyle}
-                </span>
-              </div>
-            </div>
           </div>
 
-          {/* Action Trigger Button */}
-          <div className="pt-2 flex justify-end">
+          {/* Clean Action Bar Footer */}
+          <div className="px-6 py-4 md:px-8 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-2 text-xs font-mono text-slate-600">
+              <span className="w-2 h-2 rounded-full bg-[#0088CC]"></span>
+              <span>
+                Target Batch Payload: <strong className="text-slate-900">{effectiveCount || 0} Units</strong> ({hardwareType})
+              </span>
+            </div>
+
             <button
               type="submit"
               disabled={loading}
-              className="w-full md:w-auto inline-flex items-center justify-center gap-3 py-3.5 px-8 bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-base rounded-xl shadow-cyan-sm transition-all disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-3 py-3.5 px-8 bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-sm md:text-base rounded-xl shadow-sm transition-all disabled:opacity-50 shrink-0"
             >
               {loading ? (
                 <>
@@ -319,7 +277,7 @@ export const ProvisionPage = () => {
                   <tr>
                     <th className="px-6 py-3.5">Hardware UID</th>
                     <th className="px-6 py-3.5">Signature</th>
-                    <th className="px-6 py-3.5">Form Factor & Style</th>
+                    <th className="px-6 py-3.5">Form Factor</th>
                     <th className="px-6 py-3.5">Signed Encoding URL</th>
                     <th className="px-6 py-3.5 text-right">Actions</th>
                   </tr>

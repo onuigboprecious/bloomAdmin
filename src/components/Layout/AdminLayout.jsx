@@ -64,9 +64,9 @@ export const AdminLayout = () => {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col md:flex-row">
       {/* Mobile Top Header */}
-      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 sticky top-0 z-40">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#005580] to-[#0088CC] flex items-center justify-center text-white font-extrabold text-sm shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-[#0088CC] flex items-center justify-center text-white font-extrabold text-sm">
             B
           </div>
           <span className="font-bold tracking-tight text-slate-900 font-sans text-lg">
@@ -83,14 +83,14 @@ export const AdminLayout = () => {
 
       {/* Sidebar Navigation */}
       <aside
-        className={`fixed md:sticky top-0 left-0 z-30 h-screen w-72 bg-white border-r border-slate-200 flex flex-col justify-between p-4 shadow-sm transition-transform duration-300 ${
+        className={`fixed md:sticky top-0 left-0 z-30 h-screen w-72 bg-white border-r border-slate-200 flex flex-col justify-between p-4 transition-transform duration-300 ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
         <div>
           {/* Brand Logo & Header */}
           <div className="flex items-center gap-3 px-2 py-4 mb-6 border-b border-slate-100">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#005580] to-[#0088CC] flex items-center justify-center text-white font-black text-xl shadow-cyan-sm">
+            <div className="w-10 h-10 rounded-xl bg-[#0088CC] flex items-center justify-center text-white font-black text-xl">
               B
             </div>
             <div>
@@ -119,7 +119,7 @@ export const AdminLayout = () => {
                 className={({ isActive }) =>
                   `flex items-center justify-between px-3.5 py-3 rounded-xl transition-all font-medium text-sm ${
                     isActive
-                      ? 'bg-cyan-50 text-[#0088CC] border border-cyan-200 shadow-sm font-semibold'
+                      ? 'bg-cyan-50 text-[#0088CC] border border-cyan-200 font-semibold'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                   }`
                 }
@@ -155,7 +155,7 @@ export const AdminLayout = () => {
           {/* Target API Badge */}
           <div className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
             <div className="flex items-center gap-2 text-slate-600">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span className="font-mono text-[11px] truncate max-w-[140px]">bloombe.onrender.com</span>
             </div>
             <a

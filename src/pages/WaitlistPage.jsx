@@ -175,8 +175,14 @@ export const WaitlistPage = () => {
                 </tr>
               ) : filteredWaitlist.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="text-center py-8 text-slate-500 font-mono">
-                    No matching waitlist entries found.
+                  <td colSpan="5" className="text-center py-12">
+                    <div className="flex flex-col items-center justify-center py-4">
+                      <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 mb-3 border border-slate-200">
+                        <Users className="w-6 h-6" />
+                      </div>
+                      <p className="text-base font-bold text-slate-800">No data yet</p>
+                      <p className="text-xs text-slate-500 mt-1 max-w-sm">No VIP early access signups recorded yet.</p>
+                    </div>
                   </td>
                 </tr>
               ) : (

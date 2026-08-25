@@ -27,14 +27,10 @@ export const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Subtle Glow Backdrop Circles */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-cyan-200/40 blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-10 right-10 w-72 h-72 rounded-full bg-purple-200/40 blur-3xl pointer-events-none"></div>
-
-      <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl p-8 shadow-xl relative z-10">
+      <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl p-8 shadow-sm relative z-10">
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#005580] to-[#0088CC] text-white font-black text-2xl mb-3 shadow-cyan-sm">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#0088CC] text-white font-black text-2xl mb-3">
             B
           </div>
           <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Bloom Admin Portal</h2>
@@ -97,7 +93,7 @@ export const LoginPage = () => {
 
           <button
             type="submit"
-            className="w-full py-3.5 px-4 bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-sm rounded-xl shadow-cyan-sm transition-all flex items-center justify-center gap-2 mt-2"
+            className="w-full py-3.5 px-4 bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-sm rounded-xl transition-all flex items-center justify-center gap-2 mt-2"
           >
             <ShieldCheck className="w-4 h-4" />
             Authenticate Admin Access

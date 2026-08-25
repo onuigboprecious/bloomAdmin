@@ -39,16 +39,10 @@ export const TagsPage = () => {
   // Form Inputs
   const [newCardUid, setNewCardUid] = useState('');
   const [newHardwareType, setNewHardwareType] = useState('Card'); // 'Card' or 'Wristband'
-  const [newFinishName, setNewFinishName] = useState('Stealth Matte Black');
   const [newStatus, setNewStatus] = useState('provisioned');
   const [formError, setFormError] = useState('');
   const [toastMessage, setToastMessage] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
-
-  const cardFinishes = ['Stealth Matte Black', 'Emerald Green', 'Sunset Amber', 'Custom Wood', 'Crystal Clear'];
-  const wristbandFinishes = ['Silicone Sport Black', 'Festival Woven Fabric', 'Waterproof Glow Blue', 'Emerald Silicone Strap', 'Eco Leather Strap'];
-
-  const activeFinishes = newHardwareType === 'Card' ? cardFinishes : wristbandFinishes;
 
   const statusesList = ['provisioned', 'assigned', 'active', 'unassigned'];
 
@@ -78,7 +72,7 @@ export const TagsPage = () => {
     e.preventDefault();
     setFormError('');
 
-    const fullStyleName = `${newFinishName} (${newHardwareType})`;
+    const fullStyleName = newHardwareType === 'Card' ? 'NFC Card' : 'NFC Wristband';
 
     try {
       const res = await api.createSingleTag({
@@ -284,8 +278,14 @@ export const TagsPage = () => {
                 </tr>
               ) : filteredTags.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="text-center py-8 text-slate-500">
-                    No matching NFC tags found.
+                  <td colSpan="6" className="text-center py-12">
+                    <div className="flex flex-col items-center justify-center py-4">
+                      <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 mb-3 border border-slate-200">
+                        <Tag className="w-6 h-6" />
+                      </div>
+                      <p className="text-base font-bold text-slate-800">No data yet</p>
+                      <p className="text-xs text-slate-500 mt-1 max-w-sm">No NFC tags have been provisioned or recorded in the database yet.</p>
+                    </div>
                   </td>
                 </tr>
               ) : (

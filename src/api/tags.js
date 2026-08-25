@@ -1,13 +1,7 @@
 import { fetchClient } from './client';
 
-// Local mock store for resilient offline fallback operations
-let mockTagsStore = [
-  { id: '1', cardUid: 'BLM-88A92K-NFC', signature: 'a9f4c3b2', finishName: 'Stealth Matte Black (Card)', status: 'provisioned', encodingUrl: 'https://blm.link/card/BLM-88A92K-NFC?sig=a9f4c3b2', createdAt: '2026-08-24T10:15:00Z', lastTapped: '2026-08-25T11:02:00Z', tapCount: 42 },
-  { id: '2', cardUid: 'BLM-99B14X-NFC', signature: 'c8d7e6f5', finishName: 'Silicone Sport Black (Wristband)', status: 'assigned', encodingUrl: 'https://blm.link/card/BLM-99B14X-NFC?sig=c8d7e6f5', createdAt: '2026-08-23T14:30:00Z', lastTapped: '2026-08-25T09:45:00Z', tapCount: 128 },
-  { id: '3', cardUid: 'BLM-77C33Z-NFC', signature: 'f1e2d3c4', finishName: 'Emerald Green (Card)', status: 'provisioned', encodingUrl: 'https://blm.link/card/BLM-77C33Z-NFC?sig=f1e2d3c4', createdAt: '2026-08-22T09:00:00Z', lastTapped: null, tapCount: 0 },
-  { id: '4', cardUid: 'BLM-55D88M-NFC', signature: 'b5a49382', finishName: 'Festival Woven Fabric (Wristband)', status: 'unassigned', encodingUrl: 'https://blm.link/card/BLM-55D88M-NFC?sig=b5a49382', createdAt: '2026-08-21T16:20:00Z', lastTapped: null, tapCount: 0 },
-  { id: '5', cardUid: 'BLM-33E99P-NFC', signature: 'e4f5a6b7', finishName: 'Crystal Clear (Card)', status: 'active', encodingUrl: 'https://blm.link/card/BLM-33E99P-NFC?sig=e4f5a6b7', createdAt: '2026-08-20T11:10:00Z', lastTapped: '2026-08-25T12:00:00Z', tapCount: 310 },
-];
+// Clean initial store with zero dummy items
+let tagsStore = [];
 
 function generateSignature() {
   return Math.random().toString(16).substring(2, 10);
@@ -41,11 +35,10 @@ export const tagsApi = {
       if (err.status === 409) {
         throw new Error(err.message || `cardUid ${finalUid} already exists in database and must be unique`);
       }
-      // If error other than 409, fall through to mock handling with duplicate check
     }
 
-    // Mock check for uniqueness
-    const exists = mockTagsStore.some(t => t.cardUid.toUpperCase() === finalUid.toUpperCase());
+    // Check for uniqueness
+    const exists = tagsStore.some(t => t.cardUid.toUpperCase() === finalUid.toUpperCase());
     if (exists) {
       const err = new Error(`cardUid '${finalUid}' already exists in database and must be unique`);
       err.status = 409;
@@ -64,7 +57,7 @@ export const tagsApi = {
       lastTapped: null,
       tapCount: 0,
     };
-    mockTagsStore.unshift(newTag);
+    tagsStore.unshift(newTag);
     return { success: true, data: newTag };
   },
 
@@ -100,7 +93,7 @@ export const tagsApi = {
       };
     }
 
-    // Local fallback batch creation
+    // Local batch creation
     const newCards = finalUids.map((uid) => {
       const sig = generateSignature();
       const cardObj = {
@@ -114,7 +107,7 @@ export const tagsApi = {
         lastTapped: null,
         tapCount: 0,
       };
-      mockTagsStore.unshift(cardObj);
+      tagsStore.unshift(cardObj);
       return cardObj;
     });
 
@@ -139,14 +132,14 @@ export const tagsApi = {
         id: t.id || t.cardUid,
         cardUid: t.cardUid || t.uid,
         signature: t.signature || 'a9f4c3b2',
-        finishName: t.finishName || t.finish_name || 'Stealth Matte Black (Card)',
+        finishName: t.finishName || t.finish_name || 'NFC Hardware',
         status: t.status || 'provisioned',
         encodingUrl: t.encodingUrl || t.signedUrl || `https://blm.link/card/${t.cardUid}?sig=${t.signature || 'a9f4c3b2'}`,
         tapCount: t.tapsCount || t.tapCount || 0,
       }));
       return { success: true, data: normalized };
     }
-    return { success: true, data: mockTagsStore };
+    return { success: true, data: tagsStore };
   },
 
   // Update Tag (PUT /api/admin/cards/:cardUid)
@@ -160,10 +153,10 @@ export const tagsApi = {
       return res;
     }
 
-    const index = mockTagsStore.findIndex(t => t.cardUid === cardUid || t.id === cardUid);
+    const index = tagsStore.findIndex(t => t.cardUid === cardUid || t.id === cardUid);
     if (index !== -1) {
-      mockTagsStore[index] = { ...mockTagsStore[index], ...updates };
-      return { success: true, data: mockTagsStore[index] };
+      tagsStore[index] = { ...tagsStore[index], ...updates };
+      return { success: true, data: tagsStore[index] };
     }
     throw new Error('Tag not found');
   },
@@ -178,7 +171,7 @@ export const tagsApi = {
       return res;
     }
 
-    mockTagsStore = mockTagsStore.filter(t => t.cardUid !== cardUid && t.id !== cardUid);
+    tagsStore = tagsStore.filter(t => t.cardUid !== cardUid && t.id !== cardUid);
     return { success: true, message: 'Tag removed successfully' };
   },
 };
