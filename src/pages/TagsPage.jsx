@@ -39,12 +39,30 @@ export const TagsPage = () => {
   // Form Inputs
   const [newCardUid, setNewCardUid] = useState('');
   const [newHardwareType, setNewHardwareType] = useState('Card'); // 'Card' or 'Wristband'
+  const [newFinishName, setNewFinishName] = useState('Stealth Matte Black');
   const [newStatus, setNewStatus] = useState('provisioned');
   const [formError, setFormError] = useState('');
   const [toastMessage, setToastMessage] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
 
   const statusesList = ['provisioned', 'assigned', 'active', 'unassigned'];
+
+  const cardFinishes = [
+    'Stealth Matte Black',
+    'Rose Gold Metal',
+    'Silver Stainless',
+    'Emerald Green',
+    'Sunset Amber Wood',
+  ];
+
+  const wristbandFinishes = [
+    'Silicone Sport Black',
+    'Silicone Sport White',
+    'Fabric Strap Black',
+    'Elastic Band Navy',
+  ];
+
+  const activeFinishes = newHardwareType === 'Card' ? cardFinishes : wristbandFinishes;
 
   useEffect(() => {
     fetchTags();
@@ -72,7 +90,7 @@ export const TagsPage = () => {
     e.preventDefault();
     setFormError('');
 
-    const fullStyleName = newHardwareType === 'Card' ? 'NFC Card' : 'NFC Wristband';
+    const fullStyleName = newFinishName || (newHardwareType === 'Card' ? 'Stealth Matte Black' : 'Silicone Sport Black');
 
     try {
       const res = await api.createSingleTag({
