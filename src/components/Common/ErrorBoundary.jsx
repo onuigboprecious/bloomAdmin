@@ -23,7 +23,7 @@ export class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="p-8 rounded-2xl bg-white border border-rose-200 text-slate-900 max-w-xl mx-auto my-12 shadow-xl space-y-4">
+        <div className="p-8 rounded-2xl bg-slate-50 border border-rose-200 text-slate-900 max-w-xl mx-auto my-12 space-y-4">
           <div className="flex items-center gap-3 text-rose-600">
             <AlertTriangle className="w-8 h-8 shrink-0" />
             <h2 className="text-xl font-bold">Admin Module Error</h2>

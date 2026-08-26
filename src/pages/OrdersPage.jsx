@@ -107,7 +107,7 @@ export const OrdersPage = () => {
       />
 
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-200">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-[#0088CC] text-xs font-mono mb-2">
             <PackageCheck className="w-3.5 h-3.5" />
@@ -129,7 +129,7 @@ export const OrdersPage = () => {
 
       {/* Summary Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="glass-panel p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200 flex items-center gap-4">
           <div className="w-14 h-14 rounded-2xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-[#0088CC]">
             <PackageCheck className="w-7 h-7" />
           </div>
@@ -139,7 +139,7 @@ export const OrdersPage = () => {
           </div>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-amber-200 bg-amber-50/50 shadow-sm flex items-center gap-4">
+        <div className="glass-panel p-6 rounded-2xl border border-amber-200 bg-amber-50/50 flex items-center gap-4">
           <div className="w-14 h-14 rounded-2xl bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-700">
             <Clock className="w-7 h-7" />
           </div>
@@ -149,7 +149,7 @@ export const OrdersPage = () => {
           </div>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-emerald-200 bg-emerald-50/50 shadow-sm flex items-center gap-4">
+        <div className="glass-panel p-6 rounded-2xl border border-emerald-200 bg-emerald-50/50 flex items-center gap-4">
           <div className="w-14 h-14 rounded-2xl bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-700">
             <span className="text-2xl font-bold font-mono">₦</span>
           </div>
@@ -163,7 +163,7 @@ export const OrdersPage = () => {
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="glass-panel p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row gap-4 justify-between items-center shadow-sm">
+      <div className="glass-panel p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row gap-4 justify-between items-center">
         {/* Search */}
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" />
@@ -206,7 +206,7 @@ export const OrdersPage = () => {
       </div>
 
       {/* Orders Table */}
-      <div className="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+      <div className="glass-panel rounded-2xl border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-slate-700">
             <thead className="bg-slate-50 text-xs font-mono uppercase text-slate-500 border-b border-slate-200">

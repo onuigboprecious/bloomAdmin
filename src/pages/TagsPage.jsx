@@ -173,7 +173,7 @@ export const TagsPage = () => {
       />
 
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-200">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-[#0088CC] text-xs font-mono mb-2">
             <Tag className="w-3.5 h-3.5" />
@@ -190,7 +190,7 @@ export const TagsPage = () => {
             setFormError('');
             setIsAddModalOpen(true);
           }}
-          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-sm shadow-sm transition-all"
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-sm transition-all"
         >
           <Plus className="w-4 h-4" />
           Push Single Tag to DB
@@ -198,7 +198,7 @@ export const TagsPage = () => {
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="glass-panel p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row gap-4 justify-between items-center shadow-sm">
+      <div className="glass-panel p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row gap-4 justify-between items-center">
         {/* Search Input */}
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" />
@@ -242,8 +242,8 @@ export const TagsPage = () => {
         </div>
       </div>
 
-      {/* Tags Inventory Table */}
-      <div className="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+      {/* Tags Data Table */}
+      <div className="glass-panel rounded-2xl border border-slate-200 overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
           <span className="text-xs font-mono text-slate-500">
             Showing <strong className="text-slate-900">{filteredTags.length}</strong> of {safeTags.length} NFC Tags
@@ -376,7 +376,7 @@ export const TagsPage = () => {
       {/* Modal 1: Push Single Tag Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl text-slate-900 relative">
+          <div className="w-full max-w-md bg-slate-50 border border-slate-300 rounded-2xl p-6 text-slate-900 relative">
             <button
               onClick={() => setIsAddModalOpen(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-900 p-1"
@@ -505,7 +505,7 @@ export const TagsPage = () => {
       {/* Modal 2: Edit Tag Modal */}
       {isEditModalOpen && editingTag && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl p-6 text-slate-900 relative shadow-2xl">
+          <div className="w-full max-w-md bg-slate-50 border border-slate-300 rounded-2xl p-6 text-slate-900 relative">
             <button
               onClick={() => setIsEditModalOpen(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-900 p-1"

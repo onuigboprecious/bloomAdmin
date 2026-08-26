@@ -15,9 +15,9 @@ export const ConfirmModal = ({
   if (!isOpen) return null;
 
   const buttonColors = {
-    danger: 'bg-rose-600 hover:bg-rose-700 text-white shadow-sm',
-    warning: 'bg-amber-500 hover:bg-amber-600 text-white shadow-sm',
-    info: 'bg-[#0088CC] hover:bg-[#007AAB] text-white shadow-sm',
+    danger: 'bg-rose-600 hover:bg-rose-700 text-white',
+    warning: 'bg-amber-500 hover:bg-amber-600 text-white',
+    info: 'bg-[#0088CC] hover:bg-[#007AAB] text-white',
   };
 
   const iconColors = {
@@ -28,7 +28,7 @@ export const ConfirmModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-md bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl text-slate-900">
+      <div className="relative w-full max-w-md bg-slate-50 border border-slate-300 rounded-2xl p-6 text-slate-900">
         {/* Close Button */}
         <button
           onClick={onCancel}

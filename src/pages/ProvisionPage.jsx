@@ -102,7 +102,7 @@ export const ProvisionPage = () => {
       />
 
       {/* Header Banner - Flat Solid Design */}
-      <div className="p-6 md:p-8 rounded-2xl bg-white border border-slate-200 shadow-sm">
+      <div className="p-6 md:p-8 rounded-2xl bg-slate-50 border border-slate-200">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-[#0088CC] text-xs font-mono mb-3">
@@ -119,7 +119,7 @@ export const ProvisionPage = () => {
           {provisionResult && (
             <button
               onClick={handleDownloadCsv}
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-sm shadow-sm transition-all"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-sm transition-all"
             >
               <Download className="w-4 h-4" />
               Export Batch CSV
@@ -129,7 +129,7 @@ export const ProvisionPage = () => {
       </div>
 
       {/* Batch Form Card - Perfectly Aligned 2-Column Grid */}
-      <div className="glass-panel rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="glass-panel rounded-2xl border border-slate-200 overflow-hidden">
         <form onSubmit={handleGenerateBatch} className="divide-y divide-slate-200">
           <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             {/* Step 1: Select Form Factor (Card vs Wristband) */}
@@ -195,7 +195,7 @@ export const ProvisionPage = () => {
                   onChange={(e) => setCustomSize(e.target.value)}
                   min="1"
                   max="500"
-                  className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono text-sm focus:outline-none focus:border-[#0088CC] mt-2"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono text-sm focus:outline-none focus:border-[#0088CC] mt-2"
                 />
               )}
             </div>
@@ -213,7 +213,7 @@ export const ProvisionPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center justify-center gap-3 py-3.5 px-8 bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-sm md:text-base rounded-xl shadow-sm transition-all disabled:opacity-50 shrink-0"
+              className="inline-flex items-center justify-center gap-3 py-3.5 px-8 bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-sm md:text-base rounded-xl transition-all disabled:opacity-50 shrink-0"
             >
               {loading ? (
                 <>
@@ -237,11 +237,11 @@ export const ProvisionPage = () => {
         <div className="space-y-6 animate-fadeIn">
           {/* Summary Metric Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-5 rounded-xl bg-white border border-slate-200 shadow-sm">
+            <div className="p-5 rounded-xl bg-slate-50 border border-slate-200">
               <p className="text-xs text-slate-500 font-mono uppercase">Batch ID</p>
               <p className="text-lg font-bold text-[#0088CC] font-mono mt-1">{provisionResult.batchId}</p>
             </div>
-            <div className="p-5 rounded-xl bg-white border border-slate-200 shadow-sm">
+            <div className="p-5 rounded-xl bg-slate-50 border border-slate-200">
               <p className="text-xs text-slate-500 font-mono uppercase">Total Generated Units</p>
               <p className="text-2xl font-black text-slate-900 font-mono mt-1">{provisionResult.totalGenerated}</p>
             </div>
@@ -254,7 +254,7 @@ export const ProvisionPage = () => {
           </div>
 
           {/* Provisioned Cards/Wristbands Table */}
-          <div className="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+          <div className="glass-panel rounded-2xl border border-slate-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
               <div>
                 <h3 className="text-lg font-bold text-slate-900">

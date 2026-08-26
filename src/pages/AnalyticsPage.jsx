@@ -61,7 +61,7 @@ export const AnalyticsPage = () => {
       />
 
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-200">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-[#0088CC] text-xs font-mono mb-2">
             <Zap className="w-3.5 h-3.5" />
@@ -85,7 +85,7 @@ export const AnalyticsPage = () => {
       {/* Metric Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {/* 1. Total NFC Taps */}
-        <div className="glass-panel p-6 rounded-2xl border border-cyan-200 shadow-sm bg-cyan-50/30 relative overflow-hidden">
+        <div className="glass-panel p-6 rounded-2xl border border-cyan-200 bg-cyan-50/30 relative overflow-hidden">
           <div className="flex items-center justify-between">
             <p className="text-xs font-mono font-bold text-slate-600 uppercase">⚡ Total NFC Taps</p>
             <div className="p-2 rounded-xl bg-cyan-100 text-[#0088CC]">
@@ -102,7 +102,7 @@ export const AnalyticsPage = () => {
         </div>
 
         {/* 2. Total Cards Provisioned */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200">
           <div className="flex items-center justify-between">
             <p className="text-xs font-mono font-bold text-slate-600 uppercase">🎴 Provisioned Cards</p>
             <div className="p-2 rounded-xl bg-slate-100 text-slate-700">
@@ -116,7 +116,7 @@ export const AnalyticsPage = () => {
         </div>
 
         {/* 3. Total Active Profiles */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200">
           <div className="flex items-center justify-between">
             <p className="text-xs font-mono font-bold text-slate-600 uppercase">👤 Active Profiles</p>
             <div className="p-2 rounded-xl bg-slate-100 text-slate-700">
@@ -130,7 +130,7 @@ export const AnalyticsPage = () => {
         </div>
 
         {/* 4. Total Leads Captured */}
-        <div className="glass-panel p-6 rounded-2xl border border-purple-200 bg-purple-50/40 shadow-sm">
+        <div className="glass-panel p-6 rounded-2xl border border-purple-200 bg-purple-50/40">
           <div className="flex items-center justify-between">
             <p className="text-xs font-mono font-bold text-purple-700 uppercase">📥 Leads Captured</p>
             <div className="p-2 rounded-xl bg-purple-100 text-purple-700">
@@ -145,7 +145,7 @@ export const AnalyticsPage = () => {
       </div>
 
       {/* Hourly Tap Volume Line / Bar Chart */}
-      <div className="glass-panel p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+      <div className="glass-panel p-6 rounded-2xl border border-slate-200 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
           <div>
             <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
@@ -160,7 +160,7 @@ export const AnalyticsPage = () => {
               onClick={() => setChartType('area')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 chartType === 'area'
-                  ? 'bg-[#0088CC] text-white shadow-sm font-bold'
+                  ? 'bg-[#0088CC] text-white font-bold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -170,7 +170,7 @@ export const AnalyticsPage = () => {
               onClick={() => setChartType('bar')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 chartType === 'bar'
-                  ? 'bg-[#0088CC] text-white shadow-sm font-bold'
+                  ? 'bg-[#0088CC] text-white font-bold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -249,7 +249,7 @@ export const AnalyticsPage = () => {
 
       {/* Secondary Charts & Hardware Distribution */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="glass-panel p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200">
           <h4 className="text-base font-bold text-slate-900 mb-1">Card Finish Popularity Distribution</h4>
           <p className="text-xs text-slate-500 mb-4">Hardware finish breakdown by total active cards</p>
           <div className="h-60 flex items-center justify-center">
@@ -271,7 +271,7 @@ export const AnalyticsPage = () => {
                   </Pie>
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: '#FFFFFF',
+                      backgroundColor: '#F8FAFC',
                       borderColor: '#CBD5E1',
                       borderRadius: '8px',
                       color: '#0F172A',
@@ -289,7 +289,7 @@ export const AnalyticsPage = () => {
           </div>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200 space-y-4">
           <h4 className="text-base font-bold text-slate-900">System Infrastructure Health</h4>
           <div className="space-y-3 font-mono text-xs">
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">

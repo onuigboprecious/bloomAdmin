@@ -25,8 +25,8 @@ export const Toast = ({ message, type = 'success', onClose, duration = 3000 }) =
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl border shadow-xl animate-bounce-short">
-      <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${borders[type]} shadow-lg`}>
+    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl border animate-bounce-short">
+      <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${borders[type]}`}>
         {icons[type]}
         <span className="text-sm font-medium">{message}</span>
         <button

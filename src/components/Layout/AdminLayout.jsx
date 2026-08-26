@@ -64,7 +64,7 @@ export const AdminLayout = () => {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col md:flex-row">
       {/* Mobile Top Header */}
-      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 sticky top-0 z-40">
+      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200 sticky top-0 z-40">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-[#0088CC] flex items-center justify-center text-white font-extrabold text-sm">
             B
@@ -83,7 +83,7 @@ export const AdminLayout = () => {
 
       {/* Sidebar Navigation */}
       <aside
-        className={`fixed md:sticky top-0 left-0 z-30 h-screen w-72 bg-white border-r border-slate-200 flex flex-col justify-between p-4 transition-transform duration-300 ${
+        className={`fixed md:sticky top-0 left-0 z-30 h-screen w-72 bg-slate-50 border-r border-slate-200 flex flex-col justify-between p-4 transition-transform duration-300 ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >

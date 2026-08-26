@@ -76,7 +76,7 @@ export const WaitlistPage = () => {
       />
 
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-200">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-200 text-xs font-mono mb-2">
             <Sparkles className="w-3.5 h-3.5" />
@@ -91,7 +91,7 @@ export const WaitlistPage = () => {
         {/* Action Button: Export to CSV */}
         <button
           onClick={handleExportCsv}
-          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-sm shadow-sm transition-all"
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-sm transition-all"
         >
           <Download className="w-4 h-4" />
           Export to CSV
@@ -100,7 +100,7 @@ export const WaitlistPage = () => {
 
       {/* Metric Card */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="glass-panel p-6 rounded-2xl border border-purple-200 bg-purple-50/40 shadow-sm flex items-center gap-5">
+        <div className="glass-panel p-6 rounded-2xl border border-purple-200 bg-purple-50/40 flex items-center gap-5">
           <div className="w-16 h-16 rounded-2xl bg-purple-100 border border-purple-200 flex items-center justify-center text-purple-700">
             <Users className="w-8 h-8" />
           </div>
@@ -110,7 +110,7 @@ export const WaitlistPage = () => {
           </div>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-slate-200 flex items-center justify-between shadow-sm">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200 flex items-center justify-between">
           <div>
             <p className="text-xs font-mono text-slate-500 uppercase">Top Hardware Choice</p>
             <p className="text-xl font-bold text-slate-900 mt-1">Stealth Matte Black</p>
@@ -127,7 +127,7 @@ export const WaitlistPage = () => {
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="glass-panel p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row gap-4 justify-between items-center shadow-sm">
+      <div className="glass-panel p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row gap-4 justify-between items-center">
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" />
           <input
@@ -154,7 +154,7 @@ export const WaitlistPage = () => {
       </div>
 
       {/* Waitlist Table */}
-      <div className="glass-panel rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+      <div className="glass-panel rounded-2xl border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-slate-700">
             <thead className="bg-slate-50 text-xs font-mono uppercase text-slate-500 border-b border-slate-200">

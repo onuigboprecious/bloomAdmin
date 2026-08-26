@@ -10,17 +10,24 @@
   }
 }
 
-/* Minimal Flat UI Utility Panels - Zero Gradients */
+/* Flat Blended UI Utility Panels - Zero Shadows, Perfect Background Integration */
 .glass-panel {
-  background-color: #FFFFFF;
+  background-color: #F8FAFC;
   border: 1px solid #E2E8F0;
-  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04);
+  box-shadow: none !important;
 }
 
 .glass-panel-glow {
-  background-color: #FFFFFF;
+  background-color: #F8FAFC;
   border: 1px solid #0088CC;
-  box-shadow: 0 2px 8px -1px rgba(0, 136, 204, 0.15);
+  box-shadow: none !important;
+}
+
+/* Eliminate background shadows across all components */
+*, ::before, ::after {
+  box-shadow: none !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
 }
 
 /* Clean Scrollbars */

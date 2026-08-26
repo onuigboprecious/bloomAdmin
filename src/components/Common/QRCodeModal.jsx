@@ -47,7 +47,7 @@ export const QRCodeModal = ({ isOpen, onClose, cardData, onCopy }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-md bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl text-slate-900">
+      <div className="relative w-full max-w-md bg-slate-50 border border-slate-300 rounded-2xl p-6 text-slate-900">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -66,8 +66,8 @@ export const QRCodeModal = ({ isOpen, onClose, cardData, onCopy }) => {
         </div>
 
         {/* QR Canvas Container */}
-        <div className="flex flex-col items-center justify-center p-4 bg-slate-50 border border-slate-200 rounded-xl mb-6">
-          <canvas ref={canvasRef} className="rounded-lg shadow-sm" />
+        <div className="flex flex-col items-center justify-center p-4 bg-slate-100 border border-slate-200 rounded-xl mb-6">
+          <canvas ref={canvasRef} className="rounded-lg" />
           <div className="mt-3 flex items-center gap-2 text-xs text-slate-600 font-mono">
             <span className="w-2 h-2 rounded-full bg-[#0088CC] animate-pulse"></span>
             Signature: <span className="text-[#0088CC] font-semibold">{cardData.signature}</span>
@@ -104,7 +104,7 @@ export const QRCodeModal = ({ isOpen, onClose, cardData, onCopy }) => {
           </button>
           <button
             onClick={handleDownloadQR}
-            className="flex items-center justify-center gap-2 py-2.5 px-4 bg-[#0088CC] hover:bg-[#007AAB] text-white rounded-xl font-bold text-sm shadow-sm transition-all"
+            className="flex items-center justify-center gap-2 py-2.5 px-4 bg-[#0088CC] hover:bg-[#007AAB] text-white rounded-xl font-bold text-sm transition-all"
           >
             <Download className="w-4 h-4" />
             Download QR
