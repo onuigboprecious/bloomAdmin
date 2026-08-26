@@ -17,13 +17,13 @@ export const ConfirmModal = ({
   const buttonColors = {
     danger: 'bg-rose-600 hover:bg-rose-700 text-white',
     warning: 'bg-amber-500 hover:bg-amber-600 text-white',
-    info: 'bg-[#0088CC] hover:bg-[#007AAB] text-white',
+    info: 'bg-[#00BCFF] hover:bg-[#0099D6] text-white',
   };
 
   const iconColors = {
     danger: 'bg-rose-50 text-rose-600 border-rose-200',
     warning: 'bg-amber-50 text-amber-600 border-amber-200',
-    info: 'bg-cyan-50 text-[#0088CC] border-cyan-200',
+    info: 'bg-cyan-50 text-[#00BCFF] border-cyan-200',
   };
 
   return (

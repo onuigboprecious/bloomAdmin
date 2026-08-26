@@ -11,6 +11,8 @@ import { OrdersPage } from './pages/OrdersPage';
 import { WaitlistPage } from './pages/WaitlistPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { LoginPage } from './pages/LoginPage';
+import { CardTapPage } from './pages/CardTapPage';
+import { ProfilePage } from './pages/ProfilePage';
 
 export function App() {
   return (
@@ -18,6 +20,10 @@ export function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
+            {/* Public Customer Routes */}
+            <Route path="/card/:cardUid" element={<CardTapPage />} />
+            <Route path="/profile/:username" element={<ProfilePage />} />
+
             {/* Public Login Route */}
             <Route path="/login" element={<LoginPage />} />
 

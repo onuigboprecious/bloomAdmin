@@ -58,7 +58,7 @@ export const QRCodeModal = ({ isOpen, onClose, cardData, onCopy }) => {
 
         {/* Modal Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-cyan-50 text-[#0088CC] border border-cyan-200 mb-3">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-cyan-50 text-[#00BCFF] border border-cyan-200 mb-3">
             <span className="font-mono text-xl font-bold">NFC</span>
           </div>
           <h3 className="text-xl font-bold text-slate-900 font-sans">NFC Card QR Encoding</h3>
@@ -69,8 +69,8 @@ export const QRCodeModal = ({ isOpen, onClose, cardData, onCopy }) => {
         <div className="flex flex-col items-center justify-center p-4 bg-slate-100 border border-slate-200 rounded-xl mb-6">
           <canvas ref={canvasRef} className="rounded-lg" />
           <div className="mt-3 flex items-center gap-2 text-xs text-slate-600 font-mono">
-            <span className="w-2 h-2 rounded-full bg-[#0088CC] animate-pulse"></span>
-            Signature: <span className="text-[#0088CC] font-semibold">{cardData.signature}</span>
+            <span className="w-2 h-2 rounded-full bg-[#00BCFF] animate-pulse"></span>
+            Signature: <span className="text-[#00BCFF] font-semibold">{cardData.signature}</span>
           </div>
         </div>
 
@@ -85,7 +85,7 @@ export const QRCodeModal = ({ isOpen, onClose, cardData, onCopy }) => {
               href={cardData.encodingUrl}
               target="_blank"
               rel="noreferrer"
-              className="text-[#0088CC] hover:text-[#005580] p-1"
+              className="text-[#00BCFF] hover:text-[#0099D6] p-1"
               title="Test URL in new tab"
             >
               <ExternalLink className="w-4 h-4" />

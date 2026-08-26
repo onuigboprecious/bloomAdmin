@@ -62,15 +62,15 @@ export const AdminLayout = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-white text-slate-900 flex flex-col md:flex-row">
       {/* Mobile Top Header */}
-      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200 sticky top-0 z-40">
+      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 sticky top-0 z-40">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-[#0088CC] flex items-center justify-center text-white font-extrabold text-sm">
+          <div className="w-8 h-8 rounded-lg bg-[#00BCFF] flex items-center justify-center text-white font-extrabold text-sm">
             B
           </div>
           <span className="font-bold tracking-tight text-slate-900 font-sans text-lg">
-            BLOOM <span className="text-[#0088CC] text-xs font-mono uppercase px-1.5 py-0.5 rounded bg-cyan-50 border border-cyan-200 ml-1">ADMIN</span>
+            BLOOM <span className="text-[#00BCFF] text-xs font-mono uppercase px-1.5 py-0.5 rounded bg-cyan-50 border border-cyan-200 ml-1">ADMIN</span>
           </span>
         </div>
         <button
@@ -83,14 +83,14 @@ export const AdminLayout = () => {
 
       {/* Sidebar Navigation */}
       <aside
-        className={`fixed md:sticky top-0 left-0 z-30 h-screen w-72 bg-slate-50 border-r border-slate-200 flex flex-col justify-between p-4 transition-transform duration-300 ${
+        className={`fixed md:sticky top-0 left-0 z-30 h-screen w-72 bg-white border-r border-slate-200 flex flex-col justify-between p-4 transition-transform duration-300 ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
         <div>
           {/* Brand Logo & Header */}
           <div className="flex items-center gap-3 px-2 py-4 mb-6 border-b border-slate-100">
-            <div className="w-10 h-10 rounded-xl bg-[#0088CC] flex items-center justify-center text-white font-black text-xl">
+            <div className="w-10 h-10 rounded-xl bg-[#00BCFF] flex items-center justify-center text-white font-black text-xl">
               B
             </div>
             <div>
@@ -98,7 +98,7 @@ export const AdminLayout = () => {
                 <span className="font-extrabold text-lg text-slate-900 font-sans tracking-wide">
                   BLOOM
                 </span>
-                <span className="text-[10px] font-mono font-semibold text-[#0088CC] bg-cyan-50 px-1.5 py-0.5 rounded border border-cyan-200">
+                <span className="text-[10px] font-mono font-semibold text-[#00BCFF] bg-cyan-50 px-1.5 py-0.5 rounded border border-cyan-200">
                   v2.4
                 </span>
               </div>
@@ -119,7 +119,7 @@ export const AdminLayout = () => {
                 className={({ isActive }) =>
                   `flex items-center justify-between px-3.5 py-3 rounded-xl transition-all font-medium text-sm ${
                     isActive
-                      ? 'bg-cyan-50 text-[#0088CC] border border-cyan-200 font-semibold'
+                      ? 'bg-cyan-50 text-[#00BCFF] border border-cyan-200 font-semibold'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                   }`
                 }
@@ -129,7 +129,7 @@ export const AdminLayout = () => {
                     <div className="flex items-center gap-3">
                       <item.icon
                         className={`w-5 h-5 ${
-                          isActive ? 'text-[#0088CC]' : 'text-slate-400'
+                          isActive ? 'text-[#00BCFF]' : 'text-slate-400'
                         }`}
                       />
                       <span>{item.name}</span>
@@ -137,7 +137,7 @@ export const AdminLayout = () => {
                     <span
                       className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
                         isActive
-                          ? 'bg-[#0088CC] text-white font-bold'
+                          ? 'bg-[#00BCFF] text-white font-bold'
                           : 'bg-slate-100 text-slate-500'
                       }`}
                     >
@@ -162,7 +162,7 @@ export const AdminLayout = () => {
               href="https://bloombe.onrender.com"
               target="_blank"
               rel="noreferrer"
-              className="text-slate-400 hover:text-[#0088CC]"
+              className="text-slate-400 hover:text-[#00BCFF]"
               title="Target Server Base URL"
             >
               <ExternalLink className="w-3.5 h-3.5" />
@@ -179,7 +179,7 @@ export const AdminLayout = () => {
               />
               <div className="overflow-hidden">
                 <p className="text-xs font-bold text-slate-900 truncate">{user?.name || 'Chief Admin'}</p>
-                <p className="text-[10px] text-[#0088CC] font-mono truncate">Administrator</p>
+                <p className="text-[10px] text-[#00BCFF] font-mono truncate">Administrator</p>
               </div>
             </div>
             <button

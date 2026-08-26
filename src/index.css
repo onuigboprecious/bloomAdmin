@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    background-color: #F8FAFC;
+    background-color: #FFFFFF;
     color: #0F172A;
     overflow-x: hidden;
   }
@@ -12,15 +12,23 @@
 
 /* Flat Blended UI Utility Panels - Zero Shadows, Perfect Background Integration */
 .glass-panel {
-  background-color: #F8FAFC;
+  background-color: #FFFFFF;
   border: 1px solid #E2E8F0;
   box-shadow: none !important;
 }
 
 .glass-panel-glow {
-  background-color: #F8FAFC;
-  border: 1px solid #0088CC;
+  background-color: #FFFFFF;
+  border: 1px solid #00BCFF;
   box-shadow: none !important;
+}
+
+/* Floating Capsule Header Utility */
+.capsule-header {
+  background-color: #F1F3F6;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #E2E8F0;
 }
 
 /* Eliminate background shadows across all components */
@@ -46,5 +54,5 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0088CC;
+  background: #00BCFF;
 }

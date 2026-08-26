@@ -54,7 +54,7 @@ export const ProvisionPage = () => {
           particleCount: 80,
           spread: 70,
           origin: { y: 0.6 },
-          colors: ['#0088CC', '#00BCFF', '#10B981'],
+          colors: ['#00BCFF', '#00BCFF', '#10B981'],
         });
       }
     } catch (err) {
@@ -69,6 +69,13 @@ export const ProvisionPage = () => {
     setCopiedUid(uid);
     setToastMessage({ message: `Copied URL for ${uid}`, type: 'info' });
     setTimeout(() => setCopiedUid(null), 2000);
+  };
+
+  const handleCopyAllUrls = () => {
+    if (!provisionResult || !provisionResult.cards?.length) return;
+    const urls = provisionResult.cards.map((c) => c.encodingUrl).join('\n');
+    navigator.clipboard.writeText(urls);
+    setToastMessage({ message: `Copied ${provisionResult.cards.length} signed URLs to clipboard!`, type: 'success' });
   };
 
   const handleDownloadCsv = () => {
@@ -92,6 +99,17 @@ export const ProvisionPage = () => {
     setToastMessage({ message: 'Downloaded Encoding CSV file', type: 'success' });
   };
 
+  const handleDownloadJson = () => {
+    if (!provisionResult || !provisionResult.cards?.length) return;
+    const jsonStr = JSON.stringify(provisionResult, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `NFC-Batch-${hardwareType}-${Date.now()}.json`;
+    link.click();
+    setToastMessage({ message: 'Downloaded Encoding JSON file', type: 'success' });
+  };
+
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Toast Notification */}
@@ -105,10 +123,6 @@ export const ProvisionPage = () => {
       <div className="p-6 md:p-8 rounded-2xl bg-slate-50 border border-slate-200">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-[#0088CC] text-xs font-mono mb-3">
-              <Cpu className="w-3.5 h-3.5" />
-              NFC HARDWARE PROVISIONING ENGINE
-            </div>
             <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight font-sans">
               NFC Batch Provisioning Tool (Cards & Wristbands)
             </h1>
@@ -117,13 +131,29 @@ export const ProvisionPage = () => {
             </p>
           </div>
           {provisionResult && (
-            <button
-              onClick={handleDownloadCsv}
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-sm transition-all"
-            >
-              <Download className="w-4 h-4" />
-              Export Batch CSV
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={handleCopyAllUrls}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-300 transition-all"
+              >
+                <Copy className="w-4 h-4" />
+                Copy All Signed URLs
+              </button>
+              <button
+                onClick={handleDownloadCsv}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#00BCFF] hover:bg-[#007AAB] text-white font-extrabold text-xs transition-all"
+              >
+                <Download className="w-4 h-4" />
+                Export CSV
+              </button>
+              <button
+                onClick={handleDownloadJson}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs transition-all"
+              >
+                <Download className="w-4 h-4" />
+                Export JSON
+              </button>
+            </div>
           )}
         </div>
       </div>
@@ -143,7 +173,7 @@ export const ProvisionPage = () => {
                   onClick={() => handleHardwareTypeChange('Card')}
                   className={`p-4 rounded-xl border flex items-center justify-center gap-3 font-bold text-sm transition-all ${
                     hardwareType === 'Card'
-                      ? 'bg-cyan-50 border-[#0088CC] text-[#0088CC] font-semibold'
+                      ? 'bg-cyan-50 border-[#00BCFF] text-[#00BCFF] font-semibold'
                       : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
                   }`}
                 >
@@ -179,7 +209,7 @@ export const ProvisionPage = () => {
                     onClick={() => setBatchSize(size)}
                     className={`py-3.5 px-2 rounded-xl font-mono text-sm font-bold border transition-all text-center ${
                       batchSize === size
-                        ? 'bg-cyan-50 border-[#0088CC] text-[#0088CC]'
+                        ? 'bg-cyan-50 border-[#00BCFF] text-[#00BCFF]'
                         : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900'
                     }`}
                   >
@@ -195,7 +225,7 @@ export const ProvisionPage = () => {
                   onChange={(e) => setCustomSize(e.target.value)}
                   min="1"
                   max="500"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono text-sm focus:outline-none focus:border-[#0088CC] mt-2"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono text-sm focus:outline-none focus:border-[#00BCFF] mt-2"
                 />
               )}
             </div>
@@ -204,7 +234,7 @@ export const ProvisionPage = () => {
           {/* Clean Action Bar Footer */}
           <div className="px-6 py-4 md:px-8 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-xs font-mono text-slate-600">
-              <span className="w-2 h-2 rounded-full bg-[#0088CC]"></span>
+              <span className="w-2 h-2 rounded-full bg-[#00BCFF]"></span>
               <span>
                 Target Batch Payload: <strong className="text-slate-900">{effectiveCount || 0} Units</strong> ({hardwareType})
               </span>
@@ -213,7 +243,7 @@ export const ProvisionPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center justify-center gap-3 py-3.5 px-8 bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-sm md:text-base rounded-xl transition-all disabled:opacity-50 shrink-0"
+              className="inline-flex items-center justify-center gap-3 py-3.5 px-8 bg-[#00BCFF] hover:bg-[#007AAB] text-white font-extrabold text-sm md:text-base rounded-xl transition-all disabled:opacity-50 shrink-0"
             >
               {loading ? (
                 <>
@@ -222,7 +252,6 @@ export const ProvisionPage = () => {
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-5 h-5" />
                   Generate Signed NFC {hardwareType} Batch
                   <ArrowRight className="w-5 h-5 ml-1" />
                 </>
@@ -239,7 +268,7 @@ export const ProvisionPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="p-5 rounded-xl bg-slate-50 border border-slate-200">
               <p className="text-xs text-slate-500 font-mono uppercase">Batch ID</p>
-              <p className="text-lg font-bold text-[#0088CC] font-mono mt-1">{provisionResult.batchId}</p>
+              <p className="text-lg font-bold text-[#00BCFF] font-mono mt-1">{provisionResult.batchId}</p>
             </div>
             <div className="p-5 rounded-xl bg-slate-50 border border-slate-200">
               <p className="text-xs text-slate-500 font-mono uppercase">Total Generated Units</p>
@@ -264,7 +293,7 @@ export const ProvisionPage = () => {
               </div>
               <button
                 onClick={handleDownloadCsv}
-                className="text-xs font-mono font-bold text-[#0088CC] hover:underline flex items-center gap-1.5"
+                className="text-xs font-mono font-bold text-[#00BCFF] hover:underline flex items-center gap-1.5"
               >
                 <Download className="w-3.5 h-3.5" />
                 Download Encoding CSV
@@ -286,13 +315,13 @@ export const ProvisionPage = () => {
                   {provisionResult.cards.map((card) => (
                     <tr key={card.cardUid} className="hover:bg-slate-50 transition-colors">
                       <td className="px-6 py-4 font-bold text-slate-900 flex items-center gap-2">
-                        <ShieldCheck className="w-4 h-4 text-[#0088CC]" />
+                        <ShieldCheck className="w-4 h-4 text-[#00BCFF]" />
                         {card.cardUid}
                       </td>
-                      <td className="px-6 py-4 text-[#0088CC] font-semibold">{card.signature}</td>
+                      <td className="px-6 py-4 text-[#00BCFF] font-semibold">{card.signature}</td>
                       <td className="px-6 py-4 font-sans text-slate-700">
                         <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-800 border border-slate-300">
-                          {hardwareType === 'Card' ? <CreditCard className="w-3 h-3 text-[#0088CC]" /> : <Watch className="w-3 h-3 text-purple-600" />}
+                          {hardwareType === 'Card' ? <CreditCard className="w-3 h-3 text-[#00BCFF]" /> : <Watch className="w-3 h-3 text-purple-600" />}
                           {card.finishName}
                         </span>
                       </td>
@@ -316,7 +345,7 @@ export const ProvisionPage = () => {
                           </button>
                           <button
                             onClick={() => setSelectedQrCard(card)}
-                            className="p-2 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-[#0088CC] border border-cyan-200 transition-colors"
+                            className="p-2 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-[#00BCFF] border border-cyan-200 transition-colors"
                             title="Generate QR Code"
                           >
                             <QrCode className="w-4 h-4" />

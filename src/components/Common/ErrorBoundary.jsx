@@ -36,7 +36,7 @@ export class ErrorBoundary extends React.Component {
           </div>
           <button
             onClick={this.handleReset}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0088CC] text-white font-extrabold text-sm hover:bg-[#007AAB]"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#00BCFF] text-white font-extrabold text-sm hover:bg-[#0099D6]"
           >
             <RefreshCw className="w-4 h-4" />
             Reload Admin View

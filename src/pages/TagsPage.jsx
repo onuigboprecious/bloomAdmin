@@ -15,6 +15,8 @@ import {
   CreditCard,
   Watch,
   X,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { api } from '../services/api';
 import { QRCodeModal } from '../components/Common/QRCodeModal';
@@ -161,6 +163,65 @@ export const TagsPage = () => {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
+  // Selection / Mass Delete State
+  const [selectedCardUids, setSelectedCardUids] = useState([]);
+  const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
+  const [bulkDeleteLoading, setBulkDeleteLoading] = useState(false);
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+    setSelectedCardUids([]);
+  }, [searchTerm, statusFilter, typeFilter, itemsPerPage]);
+
+  const handleToggleSelectTag = (cardUid) => {
+    setSelectedCardUids((prev) =>
+      prev.includes(cardUid) ? prev.filter((id) => id !== cardUid) : [...prev, cardUid]
+    );
+  };
+
+  const handleSelectAllOnPage = (currentPaginatedTags) => {
+    const pageUids = currentPaginatedTags.map((t) => t.cardUid);
+    const allSelected = pageUids.every((uid) => selectedCardUids.includes(uid));
+
+    if (allSelected) {
+      setSelectedCardUids((prev) => prev.filter((uid) => !pageUids.includes(uid)));
+    } else {
+      setSelectedCardUids((prev) => Array.from(new Set([...prev, ...pageUids])));
+    }
+  };
+
+  const handleConfirmBulkDelete = async () => {
+    if (selectedCardUids.length === 0) return;
+    setBulkDeleteLoading(true);
+
+    try {
+      let count = 0;
+      await Promise.allSettled(
+        selectedCardUids.map(async (cardUid) => {
+          const res = await api.deleteTag(cardUid);
+          if (res && res.success) count++;
+        })
+      );
+
+      setToastMessage({
+        message: `Mass delete completed: ${count} NFC tag(s) deleted from database`,
+        type: 'info',
+      });
+      setSelectedCardUids([]);
+      setIsBulkDeleteModalOpen(false);
+      fetchTags();
+    } catch (err) {
+      setToastMessage({ message: err.message || 'Mass delete failed', type: 'error' });
+    } finally {
+      setBulkDeleteLoading(false);
+    }
+  };
+
   const safeTags = Array.isArray(tags) ? tags : [];
 
   // Filtering
@@ -181,6 +242,13 @@ export const TagsPage = () => {
     return matchesSearch && matchesStatus && matchesType;
   });
 
+  // Pagination calculation
+  const totalFiltered = filteredTags.length;
+  const totalPages = Math.ceil(totalFiltered / itemsPerPage) || 1;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalFiltered);
+  const paginatedTags = filteredTags.slice(startIndex, endIndex);
+
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Toast Notification */}
@@ -191,28 +259,13 @@ export const TagsPage = () => {
       />
 
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-200">
+      <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-[#0088CC] text-xs font-mono mb-2">
-            <Tag className="w-3.5 h-3.5" />
-            NFC INVENTORY SYSTEM (CARDS & WRISTBANDS)
-          </div>
           <h1 className="text-2xl font-extrabold text-slate-900">NFC Inventory Management</h1>
           <p className="text-sm text-slate-600 mt-1">
-            Manage single NFC tag registrations for Cards and Wristbands, verify UID uniqueness, and edit details.
+            Manage NFC tag inventory for Cards and Wristbands, verify UID uniqueness, update status, and manage active tags.
           </p>
         </div>
-        <button
-          onClick={() => {
-            setNewCardUid('');
-            setFormError('');
-            setIsAddModalOpen(true);
-          }}
-          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#0088CC] hover:bg-[#007AAB] text-white font-extrabold text-sm transition-all"
-        >
-          <Plus className="w-4 h-4" />
-          Push Single Tag to DB
-        </button>
       </div>
 
       {/* Search & Filter Bar */}
@@ -225,7 +278,7 @@ export const TagsPage = () => {
             placeholder="Search UID, Signature, Style..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-[#0088CC]"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-[#00BCFF]"
           />
         </div>
 
@@ -237,7 +290,7 @@ export const TagsPage = () => {
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-800 px-3 py-2.5 focus:outline-none focus:border-[#0088CC]"
+              className="bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-800 px-3 py-2.5 focus:outline-none focus:border-[#00BCFF]"
             >
               <option value="All">All Form Factors</option>
               <option value="Card">🎴 Cards Only</option>
@@ -248,7 +301,7 @@ export const TagsPage = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 px-3 py-2.5 focus:outline-none focus:border-[#0088CC]"
+            className="bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 px-3 py-2.5 focus:outline-none focus:border-[#00BCFF]"
           >
             <option value="All">All Statuses</option>
             {statusesList.map((s) => (
@@ -260,11 +313,31 @@ export const TagsPage = () => {
         </div>
       </div>
 
+      {/* Mass Delete Active Selection Bar */}
+      {selectedCardUids.length > 0 && (
+        <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 flex flex-col sm:flex-row items-center justify-between gap-3 animate-fadeIn">
+          <div className="flex items-center gap-2 text-xs font-mono text-rose-800">
+            <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+            <span>
+              <strong>{selectedCardUids.length}</strong> NFC tag(s) selected for mass action
+            </span>
+          </div>
+          <button
+            onClick={() => setIsBulkDeleteModalOpen(true)}
+            className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm shrink-0"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            Mass Delete ({selectedCardUids.length})
+          </button>
+        </div>
+      )}
+
       {/* Tags Data Table */}
       <div className="glass-panel rounded-2xl border border-slate-200 overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
           <span className="text-xs font-mono text-slate-500">
-            Showing <strong className="text-slate-900">{filteredTags.length}</strong> of {safeTags.length} NFC Tags
+            Showing <strong className="text-slate-900">{totalFiltered > 0 ? startIndex + 1 : 0}</strong> to{' '}
+            <strong className="text-slate-900">{endIndex}</strong> of <strong className="text-slate-900">{totalFiltered}</strong> NFC Tags
           </span>
           <button
             onClick={fetchTags}
@@ -279,52 +352,81 @@ export const TagsPage = () => {
           <table className="w-full text-left text-sm text-slate-700">
             <thead className="bg-slate-50 text-xs font-mono uppercase text-slate-500 border-b border-slate-200">
               <tr>
-                <th className="px-6 py-3.5">Hardware UID</th>
-                <th className="px-6 py-3.5">Signature</th>
-                <th className="px-6 py-3.5">Form Factor & Finish</th>
+                <th className="px-4 py-3.5 w-10 text-center">
+                  <input
+                    type="checkbox"
+                    checked={
+                      paginatedTags.length > 0 &&
+                      paginatedTags.every((t) => selectedCardUids.includes(t.cardUid))
+                    }
+                    onChange={() => handleSelectAllOnPage(paginatedTags)}
+                    className="rounded border-slate-300 text-[#00BCFF] focus:ring-[#00BCFF] cursor-pointer"
+                    title="Select All On Page"
+                  />
+                </th>
+                <th className="px-6 py-3.5">Card UID</th>
+                <th className="px-6 py-3.5">Hardware Type</th>
                 <th className="px-6 py-3.5">Status</th>
                 <th className="px-6 py-3.5">Tap Count</th>
+                <th className="px-6 py-3.5">Linked User</th>
+                <th className="px-6 py-3.5">Created Date</th>
                 <th className="px-6 py-3.5 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 font-mono text-xs">
               {loading ? (
                 <tr>
-                  <td colSpan="6" className="text-center py-8 text-slate-500">
+                  <td colSpan="8" className="text-center py-8 text-slate-500">
                     Loading NFC database...
                   </td>
                 </tr>
-              ) : filteredTags.length === 0 ? (
+              ) : paginatedTags.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="text-center py-12">
+                  <td colSpan="8" className="text-center py-12">
                     <div className="flex flex-col items-center justify-center py-4">
                       <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 mb-3 border border-slate-200">
                         <Tag className="w-6 h-6" />
                       </div>
-                      <p className="text-base font-bold text-slate-800">No data yet</p>
-                      <p className="text-xs text-slate-500 mt-1 max-w-sm">No NFC tags have been provisioned or recorded in the database yet.</p>
+                      <p className="text-base font-bold text-slate-800">No data found</p>
+                      <p className="text-xs text-slate-500 mt-1 max-w-sm">No NFC tags match the selected filters or search terms.</p>
                     </div>
                   </td>
                 </tr>
               ) : (
-                filteredTags.map((tag) => {
-                  const isWristband = String(tag.finishName || '').includes('Wristband');
+                paginatedTags.map((tag) => {
+                  const hardwareType = tag.hardwareType || (String(tag.finishName || '').toLowerCase().includes('wristband') ? 'Wristband' : 'Card');
+                  const isWristband = hardwareType === 'Wristband';
+                  const linkedUser = tag.linkedUser || tag.ownerUsername || tag.username || null;
+                  const createdFormatted = tag.createdAt ? new Date(tag.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently';
+                  const isSelected = selectedCardUids.includes(tag.cardUid);
 
                   return (
-                    <tr key={tag.id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-6 py-4 font-bold text-slate-900 flex items-center gap-2">
-                        <ShieldCheck className="w-4 h-4 text-[#0088CC]" />
-                        {tag.cardUid}
+                    <tr key={tag.id} className={`transition-colors ${isSelected ? 'bg-cyan-50/50' : 'hover:bg-slate-50'}`}>
+                      <td className="px-4 py-4 text-center">
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => handleToggleSelectTag(tag.cardUid)}
+                          className="rounded border-slate-300 text-[#00BCFF] focus:ring-[#00BCFF] cursor-pointer"
+                        />
                       </td>
-                      <td className="px-6 py-4 text-[#0088CC] font-semibold">{tag.signature}</td>
+                      <td className="px-6 py-4 font-bold text-slate-900 flex items-center gap-2">
+                        <ShieldCheck className="w-4 h-4 text-[#00BCFF]" />
+                        <div>
+                          <div>{tag.cardUid}</div>
+                          <div className="text-[10px] text-slate-400 font-mono font-normal">Sig: {tag.signature}</div>
+                        </div>
+                      </td>
                       <td className="px-6 py-4 font-sans text-slate-700">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 border border-slate-200">
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
+                          isWristband ? 'bg-purple-50 text-purple-700 border border-purple-200' : 'bg-cyan-50 text-[#00BCFF] border border-cyan-200'
+                        }`}>
                           {isWristband ? (
                             <Watch className="w-3.5 h-3.5 text-purple-600" />
                           ) : (
-                            <CreditCard className="w-3.5 h-3.5 text-[#0088CC]" />
+                            <CreditCard className="w-3.5 h-3.5 text-[#00BCFF]" />
                           )}
-                          {tag.finishName}
+                          {hardwareType}
                         </span>
                       </td>
                       <td className="px-6 py-4">
@@ -332,9 +434,7 @@ export const TagsPage = () => {
                           className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${
                             tag.status === 'provisioned'
                               ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                              : tag.status === 'assigned'
-                              ? 'bg-purple-50 text-purple-700 border border-purple-200'
-                              : tag.status === 'active'
+                              : tag.status === 'claimed' || tag.status === 'active'
                               ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                               : 'bg-slate-100 text-slate-600'
                           }`}
@@ -343,6 +443,16 @@ export const TagsPage = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 font-bold text-slate-800">{tag.tapCount || 0} Taps</td>
+                      <td className="px-6 py-4 font-sans">
+                        {linkedUser ? (
+                          <span className="text-[#00BCFF] font-bold text-xs bg-cyan-50 px-2 py-0.5 rounded border border-cyan-200">
+                            @{linkedUser}
+                          </span>
+                        ) : (
+                          <span className="text-slate-400 italic text-xs">Unlinked</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-slate-500 font-sans text-xs">{createdFormatted}</td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
@@ -358,7 +468,7 @@ export const TagsPage = () => {
                           </button>
                           <button
                             onClick={() => setSelectedQrCard(tag)}
-                            className="p-2 rounded-lg bg-cyan-50 text-[#0088CC] hover:bg-cyan-100 border border-cyan-200"
+                            className="p-2 rounded-lg bg-cyan-50 text-[#00BCFF] hover:bg-cyan-100 border border-cyan-200"
                             title="QR Code"
                           >
                             <QrCode className="w-3.5 h-3.5" />
@@ -389,6 +499,53 @@ export const TagsPage = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination Footer */}
+        <div className="px-6 py-4 bg-slate-50/80 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-600">
+          <div className="flex items-center gap-3">
+            <span>
+              Showing <strong className="text-slate-900">{totalFiltered > 0 ? startIndex + 1 : 0}</strong> -{' '}
+              <strong className="text-slate-900">{endIndex}</strong> of <strong className="text-slate-900">{totalFiltered}</strong> Tags
+            </span>
+            <div className="flex items-center gap-1.5 border-l border-slate-200 pl-3">
+              <span className="text-slate-500">Per page:</span>
+              <select
+                value={itemsPerPage}
+                onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                className="bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-800 px-2 py-1 focus:outline-none focus:border-[#00BCFF]"
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="p-1.5 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              title="Previous Page"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <span className="px-3 py-1 font-bold text-slate-800 bg-white border border-slate-200 rounded-lg">
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="p-1.5 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              title="Next Page"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Modal 1: Push Single Tag Modal */}
@@ -403,7 +560,7 @@ export const TagsPage = () => {
             </button>
             <h3 className="text-xl font-bold mb-1">Push Single NFC Tag to DB</h3>
             <p className="text-xs text-slate-500 mb-4">
-              Calls <code className="text-[#0088CC] font-mono">POST /api/admin/cards</code> with tag payload.
+              Calls <code className="text-[#00BCFF] font-mono">POST /api/admin/cards</code> with tag payload.
             </p>
 
             {formError && (
@@ -428,7 +585,7 @@ export const TagsPage = () => {
                     }}
                     className={`py-2.5 px-3 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold transition-all ${
                       newHardwareType === 'Card'
-                        ? 'bg-cyan-50 border-[#0088CC] text-[#0088CC]'
+                        ? 'bg-cyan-50 border-[#00BCFF] text-[#00BCFF]'
                         : 'bg-slate-50 border-slate-200 text-slate-600'
                     }`}
                   >
@@ -462,7 +619,7 @@ export const TagsPage = () => {
                   placeholder="e.g. BLM-88A92K-NFC"
                   value={newCardUid}
                   onChange={(e) => setNewCardUid(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono text-sm focus:outline-none focus:border-[#0088CC]"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono text-sm focus:outline-none focus:border-[#00BCFF]"
                 />
               </div>
 
@@ -473,7 +630,7 @@ export const TagsPage = () => {
                 <select
                   value={newFinishName}
                   onChange={(e) => setNewFinishName(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-[#0088CC]"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-[#00BCFF]"
                 >
                   {activeFinishes.map((f) => (
                     <option key={f} value={f}>
@@ -602,6 +759,19 @@ export const TagsPage = () => {
         loading={deleteLoading}
         onConfirm={handleConfirmDelete}
         onCancel={() => setDeletingTag(null)}
+      />
+
+      {/* Mass Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={isBulkDeleteModalOpen}
+        title={`Mass Delete ${selectedCardUids.length} NFC Tags`}
+        message={`Are you sure you want to permanently delete ${selectedCardUids.length} selected NFC hardware tag(s) from the database? This action cannot be undone.`}
+        confirmText={`Mass Delete ${selectedCardUids.length} Tags`}
+        cancelText="Cancel"
+        type="danger"
+        loading={bulkDeleteLoading}
+        onConfirm={handleConfirmBulkDelete}
+        onCancel={() => setIsBulkDeleteModalOpen(false)}
       />
     </div>
   );

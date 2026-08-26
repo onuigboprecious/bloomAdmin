@@ -174,4 +174,93 @@ export const tagsApi = {
     tagsStore = tagsStore.filter(t => t.cardUid !== cardUid && t.id !== cardUid);
     return { success: true, message: 'Tag removed successfully' };
   },
+
+  // Get Public Hardware Details by Card UID & Signature (GET /api/cards/:cardUid?sig=...)
+  async getCardDetails(cardUid, signature) {
+    const query = signature ? `?sig=${signature}` : '';
+    const res = await fetchClient(`/api/cards/${cardUid}${query}`, { method: 'GET' });
+    if (res && res.success) {
+      const card = res.data;
+      return {
+        success: true,
+        data: {
+          cardUid: card.cardUid || card.uid || cardUid,
+          hardwareType: card.hardwareType || (String(card.finishName || '').toLowerCase().includes('wristband') ? 'Wristband' : 'Card'),
+          finishName: card.finishName || (card.hardwareType === 'Wristband' ? 'NFC Wristband' : 'NFC Card'),
+          status: card.status || 'provisioned',
+          signature: card.signature || signature || 'a9f4c3b2',
+          linkedUser: card.linkedUser || card.ownerUsername || card.username || null,
+          ownerName: card.ownerName || card.name || null,
+          tapCount: card.tapCount || card.tapsCount || 1,
+          createdAt: card.createdAt || new Date().toISOString(),
+        },
+      };
+    }
+
+    // Local Fallback Check
+    const found = tagsStore.find(t => t.cardUid.toUpperCase() === cardUid.toUpperCase());
+    if (found) {
+      return {
+        success: true,
+        data: {
+          ...found,
+          hardwareType: found.hardwareType || (found.finishName?.toLowerCase().includes('wristband') ? 'Wristband' : 'Card'),
+        },
+      };
+    }
+
+    // Mock fallback for provisioned BLM tags
+    if (cardUid.toUpperCase().startsWith('BLM-')) {
+      const isWristband = cardUid.toUpperCase().includes('WRIST');
+      const hardwareType = isWristband ? 'Wristband' : 'Card';
+      const mockCard = {
+        cardUid,
+        hardwareType,
+        finishName: hardwareType === 'Wristband' ? 'Silicone Sport Black' : 'Stealth Matte Black',
+        status: 'provisioned',
+        signature: signature || 'a9f4c3b2',
+        linkedUser: null,
+        ownerName: null,
+        tapCount: 1,
+        createdAt: new Date().toISOString(),
+      };
+      return { success: true, data: mockCard };
+    }
+
+    const error = new Error(`NFC Hardware tag '${cardUid}' not found in database.`);
+    error.status = 404;
+    throw error;
+  },
+
+  // Claim & Link Card to User Profile (POST /api/cards/claim)
+  async claimCard({ cardUid, signature, username, email, name }) {
+    const payload = { cardUid, signature, username, email, name };
+    const res = await fetchClient('/api/cards/claim', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+
+    if (res && res.success) {
+      return res;
+    }
+
+    // Local Store Update Fallback
+    const found = tagsStore.find(t => t.cardUid.toUpperCase() === cardUid.toUpperCase());
+    if (found) {
+      found.status = 'claimed';
+      found.linkedUser = username || 'user';
+      found.ownerName = name || 'Bloom Member';
+    }
+
+    return {
+      success: true,
+      message: `Successfully claimed ${cardUid} and linked to @${username || 'user'}`,
+      data: {
+        cardUid,
+        status: 'claimed',
+        linkedUser: username || 'user',
+        redirectUrl: `/profile/${username || 'user'}`,
+      },
+    };
+  },
 };

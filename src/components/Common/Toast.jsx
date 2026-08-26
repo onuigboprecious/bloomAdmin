@@ -15,7 +15,7 @@ export const Toast = ({ message, type = 'success', onClose, duration = 3000 }) =
   const icons = {
     success: <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />,
     error: <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />,
-    info: <Info className="w-5 h-5 text-[#0088CC] shrink-0" />,
+    info: <Info className="w-5 h-5 text-[#00BCFF] shrink-0" />,
   };
 
   const borders = {

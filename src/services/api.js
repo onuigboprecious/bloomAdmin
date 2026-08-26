@@ -9,6 +9,8 @@ export const api = {
   provisionBatch: (params) => tagsApi.batchProvision(params),
   createSingleTag: (params) => tagsApi.createSingleTag(params),
   getTagsList: () => tagsApi.listTags(),
+  getCardDetails: (cardUid, sig) => tagsApi.getCardDetails(cardUid, sig),
+  claimCard: (params) => tagsApi.claimCard(params),
   updateTag: (cardUid, updates) => tagsApi.updateTag(cardUid, updates),
   deleteTag: (cardUid) => tagsApi.deleteTag(cardUid),
 
