@@ -38,10 +38,10 @@ export const ordersApi = {
       const list = Array.isArray(raw) ? raw : (raw?.orders || raw?.data || []);
       const normalized = list.map((o) => ({
         id: o.id || o.order_id || 'ORD-0000',
-        customerName: o.customerName || o.customer_name || o.name || 'Customer',
-        email: o.email || 'customer@bloom.ng',
-        address: o.address || o.deliveryAddress || o.delivery_address || 'No address specified',
-        finishName: o.finishName || o.finish_name || 'NFC Hardware',
+        customerName: o.customerName || o.customer_name || o.name || 'no data yet',
+        email: o.email || 'no data yet',
+        address: o.address || o.deliveryAddress || o.delivery_address || 'no data yet',
+        finishName: o.finishName || o.finish_name || 'no data yet',
         quantity: o.quantity || 1,
         totalAmount: o.totalAmount || o.amount || 0,
         status: String(o.status || 'pending').toLowerCase(),

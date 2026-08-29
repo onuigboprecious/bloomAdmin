@@ -240,13 +240,13 @@ export const OrdersPage = () => {
                 </tr>
               ) : (
                 filteredOrders.map((order) => {
-                  const orderId = order.id || order.order_id || order.orderId || 'ORD-0000';
-                  const customerName = order.customerName || order.customer_name || order.name || 'Anonymous Customer';
-                  const email = order.email || 'N/A';
-                  const address = order.address || order.delivery_address || order.deliveryAddress || 'No Address Specified';
-                  const finishName = order.finishName || order.finish_name || 'Stealth Matte Black Card';
+                  const orderId = order.id || order.order_id || order.orderId || 'no data yet';
+                  const customerName = order.customerName || order.customer_name || order.name || 'no data yet';
+                  const email = order.email || 'no data yet';
+                  const address = order.address || order.delivery_address || order.deliveryAddress || 'no data yet';
+                  const finishName = order.finishName || order.finish_name || 'no data yet';
                   const quantity = order.quantity || 1;
-                  const totalAmount = order.totalAmount || order.amount || 25000;
+                  const totalAmount = order.totalAmount || order.amount || 0;
                   const status = String(order.status || 'pending').toLowerCase();
                   const isWristband = finishName.includes('Wristband');
 

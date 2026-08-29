@@ -35,10 +35,10 @@ export const waitlistApi = {
       const list = Array.isArray(raw) ? raw : (raw?.waitlist || raw?.data || []);
       const normalized = list.map((w) => ({
         id: w.id || `W-${Math.floor(100 + Math.random() * 900)}`,
-        name: w.name || 'VIP User',
-        email: w.email || 'vip@bloom.ng',
-        phone: w.phone || 'N/A',
-        preferredFinish: w.preferredFinish || w.preferred_finish || 'NFC Hardware',
+        name: w.name || 'no data yet',
+        email: w.email || 'no data yet',
+        phone: w.phone || 'no data yet',
+        preferredFinish: w.preferredFinish || w.preferred_finish || 'no data yet',
         dateRegistered: w.dateRegistered || w.created_at || new Date().toISOString(),
       }));
       return { success: true, data: normalized };

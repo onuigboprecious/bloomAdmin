@@ -17,7 +17,7 @@ export async function fetchClient(endpoint, options = {}) {
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 6000);
+    const timeoutId = setTimeout(() => controller.abort(), 25000);
     const response = await fetch(url, { ...config, signal: controller.signal });
     clearTimeout(timeoutId);
 

@@ -9,7 +9,6 @@ import {
   Menu,
   X,
   Cpu,
-  ExternalLink,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -28,35 +27,30 @@ export const AdminLayout = () => {
       name: 'Batch Provisioning',
       path: '/admin/provision',
       icon: Cpu,
-      badge: 'NFC',
       description: 'Generate signed card batches',
     },
     {
       name: 'Tag Management',
       path: '/admin/tags',
       icon: Tag,
-      badge: 'CRUD',
       description: 'Single & inventory management',
     },
     {
       name: 'Orders & Fulfillment',
       path: '/admin/orders',
       icon: PackageCheck,
-      badge: 'Orders',
       description: 'Physical card fulfillment',
     },
     {
       name: 'VIP Waitlist',
       path: '/admin/waitlist',
       icon: Users,
-      badge: 'CSV',
       description: 'Early access signups',
     },
     {
       name: 'Platform Analytics',
       path: '/admin/analytics',
       icon: BarChart3,
-      badge: 'Live',
       description: 'Taps & conversion metrics',
     },
   ];
@@ -125,25 +119,14 @@ export const AdminLayout = () => {
                 }
               >
                 {({ isActive }) => (
-                  <>
-                    <div className="flex items-center gap-3">
-                      <item.icon
-                        className={`w-5 h-5 ${
-                          isActive ? 'text-[#00BCFF]' : 'text-slate-400'
-                        }`}
-                      />
-                      <span>{item.name}</span>
-                    </div>
-                    <span
-                      className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
-                        isActive
-                          ? 'bg-[#00BCFF] text-white font-bold'
-                          : 'bg-slate-100 text-slate-500'
+                  <div className="flex items-center gap-3">
+                    <item.icon
+                      className={`w-5 h-5 ${
+                        isActive ? 'text-[#00BCFF]' : 'text-slate-400'
                       }`}
-                    >
-                      {item.badge}
-                    </span>
-                  </>
+                    />
+                    <span>{item.name}</span>
+                  </div>
                 )}
               </NavLink>
             ))}
@@ -152,23 +135,6 @@ export const AdminLayout = () => {
 
         {/* Sidebar Footer & Admin User Card */}
         <div className="pt-4 border-t border-slate-200 space-y-3">
-          {/* Target API Badge */}
-          <div className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
-            <div className="flex items-center gap-2 text-slate-600">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span className="font-mono text-[11px] truncate max-w-[140px]">bloombe.onrender.com</span>
-            </div>
-            <a
-              href="https://bloombe.onrender.com"
-              target="_blank"
-              rel="noreferrer"
-              className="text-slate-400 hover:text-[#00BCFF]"
-              title="Target Server Base URL"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          </div>
-
           {/* User Account */}
           <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
             <div className="flex items-center gap-3">

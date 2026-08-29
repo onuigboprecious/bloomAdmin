@@ -131,12 +131,12 @@ export const tagsApi = {
       const normalized = list.map((t) => ({
         id: t.id || t.cardUid,
         cardUid: t.cardUid || t.uid,
-        signature: t.signature || 'a9f4c3b2',
-        finishName: t.finishName || t.finish_name || 'NFC Hardware',
+        signature: t.signature || 'no data yet',
+        finishName: t.finishName || t.finish_name || 'no data yet',
         status: t.status || 'provisioned',
-        linkedUser: t.linkedUser || t.ownerUsername || t.username || (t.userId ? 'Linked User' : null),
+        linkedUser: t.linkedUser || t.ownerUsername || t.username || (t.userId ? 'Linked User' : 'unassigned'),
         createdAt: t.createdAt || t.created_at || t.CreatedAt || null,
-        encodingUrl: t.encodingUrl || t.signedUrl || `https://blm.link/card/${t.cardUid}?sig=${t.signature || 'a9f4c3b2'}`,
+        encodingUrl: t.encodingUrl || t.signedUrl || `https://www.enlazer.com.ng/card/${t.cardUid}?sig=${t.signature || ''}`,
         tapCount: t.tapsCount || t.tapCount || 0,
       }));
       return { success: true, data: normalized };

@@ -188,28 +188,28 @@ export const WaitlistPage = () => {
               ) : (
                 filteredWaitlist.map((entry) => (
                   <tr key={entry.id} className="hover:bg-slate-50 transition-colors">
-                    <td className="px-6 py-4 font-bold text-slate-900 font-sans">{entry.name}</td>
+                    <td className="px-6 py-4 font-bold text-slate-900 font-sans">{entry.name || 'no data yet'}</td>
                     <td className="px-6 py-4 font-mono text-slate-700">
                       <div className="flex items-center gap-1.5">
                         <Mail className="w-3.5 h-3.5 text-slate-400" />
-                        <span>{entry.email}</span>
+                        <span>{entry.email || 'no data yet'}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 font-mono text-slate-700">
                       <div className="flex items-center gap-1.5">
                         <Phone className="w-3.5 h-3.5 text-slate-400" />
-                        <span>{entry.phone}</span>
+                        <span>{entry.phone || 'no data yet'}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <span className="px-3 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-200 font-medium">
-                        {entry.preferredFinish}
+                        {entry.preferredFinish || 'no data yet'}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right font-mono text-slate-500">
                       <div className="flex items-center justify-end gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                        <span>{new Date(entry.dateRegistered).toLocaleDateString()}</span>
+                        <span>{entry.dateRegistered ? new Date(entry.dateRegistered).toLocaleDateString() : 'no data yet'}</span>
                       </div>
                     </td>
                   </tr>
