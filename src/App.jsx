@@ -8,7 +8,7 @@ import { ErrorBoundary } from './components/Common/ErrorBoundary';
 import { ProvisionPage } from './pages/ProvisionPage';
 import { TagsPage } from './pages/TagsPage';
 import { OrdersPage } from './pages/OrdersPage';
-import { WaitlistPage } from './pages/WaitlistPage';
+import { CustomersPage } from './pages/CustomersPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { LoginPage } from './pages/LoginPage';
 import { CardTapPage } from './pages/CardTapPage';
@@ -40,7 +40,8 @@ export function App() {
               <Route path="provision" element={<ProvisionPage />} />
               <Route path="tags" element={<TagsPage />} />
               <Route path="orders" element={<OrdersPage />} />
-              <Route path="waitlist" element={<WaitlistPage />} />
+              <Route path="customers" element={<CustomersPage />} />
+              <Route path="waitlist" element={<Navigate to="/admin/customers" replace />} />
               <Route path="analytics" element={<AnalyticsPage />} />
             </Route>
 

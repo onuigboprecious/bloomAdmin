@@ -109,10 +109,7 @@ export const OrdersPage = () => {
       {/* Header Banner */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-200">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-[#0088CC] text-xs font-mono mb-2">
-            <PackageCheck className="w-3.5 h-3.5" />
-            FULFILLMENT OPERATIONS (CARDS & WRISTBANDS)
-          </div>
+
           <h1 className="text-2xl font-extrabold text-slate-900">Physical Hardware Orders & Fulfillment</h1>
           <p className="text-sm text-slate-600 mt-1">
             Track user physical NFC Card and Wristband purchases, manage shipping queues, and update delivery statuses.

@@ -1,4 +1,5 @@
 node_modules
+dist
 
 # wrangler files
 .wrangler
@@ -6,3 +7,4 @@ node_modules
 !.dev.vars.example
 .env*
 !.env.example
+

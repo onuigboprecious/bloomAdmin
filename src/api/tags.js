@@ -135,6 +135,8 @@ export const tagsApi = {
         finishName: t.finishName || t.finish_name || 'no data yet',
         status: t.status || 'provisioned',
         linkedUser: t.linkedUser || t.ownerUsername || t.username || (t.userId ? 'Linked User' : 'unassigned'),
+        email: t.email || t.ownerEmail || t.userEmail || t.user_email || null,
+        ownerName: t.ownerName || t.name || null,
         createdAt: t.createdAt || t.created_at || t.CreatedAt || null,
         encodingUrl: t.encodingUrl || t.signedUrl || `https://www.enlazer.com.ng/card/${t.cardUid}?sig=${t.signature || ''}`,
         tapCount: t.tapsCount || t.tapCount || 0,

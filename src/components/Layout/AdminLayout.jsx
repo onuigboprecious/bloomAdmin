@@ -42,10 +42,10 @@ export const AdminLayout = () => {
       description: 'Physical card fulfillment',
     },
     {
-      name: 'VIP Waitlist',
-      path: '/admin/waitlist',
+      name: 'Customers',
+      path: '/admin/customers',
       icon: Users,
-      description: 'Early access signups',
+      description: 'Customer accounts & active cards',
     },
     {
       name: 'Platform Analytics',
