@@ -1,5 +1,5 @@
 // Base API HTTP Client Configuration
-export const BASE_URL = 'https://bloombe.onrender.com';
+export const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 export async function fetchClient(endpoint, options = {}) {
   const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;

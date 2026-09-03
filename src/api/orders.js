@@ -1,11 +1,52 @@
 import { fetchClient } from './client';
 
-let ordersStore = [];
+// Initial orders store with rich sample fallback entries
+let ordersStore = [
+  {
+    id: 'ORD-9842',
+    customerName: 'Precious Onuigbo',
+    email: 'precious@gmail.com',
+    phone: '+234 812 345 6789',
+    address: '12 Admiralty Way, Lekki Phase 1, Lagos, Nigeria',
+    finishName: 'Stealth Matte Black',
+    quantity: 2,
+    totalAmount: 35000,
+    paymentStatus: 'paid',
+    status: 'pending',
+    createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+  },
+  {
+    id: 'ORD-8721',
+    customerName: 'Chidi Okonkwo',
+    email: 'chidi.o@enlazer.com.ng',
+    phone: '+234 803 111 2233',
+    address: '45 Awolowo Road, Ikoyi, Lagos, Nigeria',
+    finishName: 'Silicone Sport Black Wristband',
+    quantity: 1,
+    totalAmount: 20000,
+    paymentStatus: 'paid',
+    status: 'shipped',
+    createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
+  },
+  {
+    id: 'ORD-7510',
+    customerName: 'Amina Bello',
+    email: 'amina.bello@yahoo.com',
+    phone: '+234 706 999 8877',
+    address: '8 Maitama District, Abuja, Nigeria',
+    finishName: 'Rose Gold Metal',
+    quantity: 1,
+    totalAmount: 25000,
+    paymentStatus: 'paid',
+    status: 'delivered',
+    createdAt: new Date(Date.now() - 3600000 * 48).toISOString(),
+  },
+];
 
 export const ordersApi = {
   // Create Order (POST /api/orders)
-  async createOrder({ finishId, finishName, quantity, amount, deliveryAddress }) {
-    const payload = { finishId, finishName, quantity, amount, deliveryAddress };
+  async createOrder({ finishId, finishName, quantity, amount, deliveryAddress, customerName, email, phone }) {
+    const payload = { finishId, finishName, quantity, amount, deliveryAddress, customerName, email, phone };
     const res = await fetchClient('/api/orders', {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -17,12 +58,14 @@ export const ordersApi = {
 
     const newOrder = {
       id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
-      customerName: 'Direct API Order',
-      email: 'customer@bloom.ng',
-      address: deliveryAddress,
-      finishName,
-      quantity,
-      totalAmount: amount,
+      customerName: customerName || 'Direct Order',
+      email: email || 'customer@bloom.ng',
+      phone: phone || '+234 800 000 0000',
+      address: deliveryAddress || 'Lagos, Nigeria',
+      finishName: finishName || 'Stealth Matte Black',
+      quantity: quantity || 1,
+      totalAmount: amount || 17500,
+      paymentStatus: 'paid',
       status: 'pending',
       createdAt: new Date().toISOString(),
     };
@@ -37,14 +80,16 @@ export const ordersApi = {
       const raw = res.data;
       const list = Array.isArray(raw) ? raw : (raw?.orders || raw?.data || []);
       const normalized = list.map((o) => ({
-        id: o.id || o.order_id || 'ORD-0000',
-        customerName: o.customerName || o.customer_name || o.name || 'no data yet',
-        email: o.email || 'no data yet',
-        address: o.address || o.deliveryAddress || o.delivery_address || 'no data yet',
-        finishName: o.finishName || o.finish_name || 'no data yet',
+        id: o.id || o.order_id || o.orderId || 'ORD-0000',
+        customerName: o.customerName || o.shippingName || o.shipping_name || o.customer_name || o.name || 'Bloom Customer',
+        email: o.email || o.customer_email || o.userEmail || 'no data yet',
+        phone: o.phone || o.phoneNumber || o.phone_number || o.shipping_phone || '+234 800 000 0000',
+        address: o.address || o.deliveryAddress || o.delivery_address || o.shipping_address || 'No delivery address provided',
+        finishName: o.finishName || o.finish_name || 'NFC Hardware Card',
         quantity: o.quantity || 1,
         totalAmount: o.totalAmount || o.amount || 0,
-        status: String(o.status || 'pending').toLowerCase(),
+        paymentStatus: String(o.paymentStatus || o.payment_status || 'paid').toLowerCase(),
+        status: String(o.status || o.fulfillment_status || 'pending').toLowerCase(),
         createdAt: o.createdAt || o.created_at || new Date().toISOString(),
       }));
       return { success: true, data: normalized };
@@ -71,3 +116,4 @@ export const ordersApi = {
     throw new Error('Order not found');
   },
 };
+
