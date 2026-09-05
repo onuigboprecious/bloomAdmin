@@ -43,12 +43,12 @@ export const authApi = {
         };
       } else {
         throw new Error(
-          `Access Denied: Account '${authenticatedEmail}' does not have Administrator privileges. Only ${ADMIN_EMAIL} is permitted.`
+          `Access Denied: Account '${authenticatedEmail}' does not have Administrator privileges.`
         );
       }
     }
 
-    throw new Error(`Unable to connect to authentication server. Please verify the backend API server is running on ${BASE_URL}.`);
+    throw new Error(`Unable to connect to authentication server`);
   },
 
   // Session Check: GET /api/auth/me
