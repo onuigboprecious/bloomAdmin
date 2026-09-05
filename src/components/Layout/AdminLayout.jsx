@@ -154,7 +154,7 @@ export const AdminLayout = () => {
               />
               <div className="overflow-hidden">
                 <p className="text-xs font-bold text-slate-900 truncate">{user?.name || 'Precious Onuigbo'}</p>
-                <p className="text-[10px] text-[#0088CC] font-mono truncate">{user?.email || 'onuigboprecious47@gmail.com'}</p>
+                <p className="text-[10px] text-[#0088CC] font-mono truncate">{user?.email || import.meta.env.VITE_ADMIN_EMAIL || 'onuigboprecious47@gmail.com'}</p>
               </div>
             </div>
             <button

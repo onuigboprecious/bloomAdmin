@@ -69,7 +69,7 @@ export const LoginPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono text-sm focus:outline-none focus:border-[#0088CC]"
-                placeholder="onuigboprecious47@gmail.com"
+                placeholder={import.meta.env.VITE_ADMIN_EMAIL || 'onuigboprecious47@gmail.com'}
               />
             </div>
           </div>

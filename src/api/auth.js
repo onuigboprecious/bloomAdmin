@@ -1,6 +1,6 @@
-import { fetchClient } from './client';
+import { fetchClient, BASE_URL } from './client';
 
-const ADMIN_EMAIL = 'onuigboprecious47@gmail.com';
+const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL || 'onuigboprecious47@gmail.com').toLowerCase().trim();
 
 export const authApi = {
   // Login: POST /api/auth/login (integrates directly with infarbloom backend)
@@ -48,7 +48,7 @@ export const authApi = {
       }
     }
 
-    throw new Error('Invalid authentication response from server');
+    throw new Error(`Unable to connect to authentication server. Please verify the backend API server is running on ${BASE_URL}.`);
   },
 
   // Session Check: GET /api/auth/me
