@@ -8,8 +8,8 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [email, setEmail] = useState('admin@bloom.ng');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   const from = location.state?.from?.pathname || '/admin/provision';
@@ -69,7 +69,7 @@ export const LoginPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono text-sm focus:outline-none focus:border-[#0088CC]"
-                placeholder="admin@bloom.ng"
+                placeholder="onuigboprecious47@gmail.com"
               />
             </div>
           </div>
@@ -100,14 +100,6 @@ export const LoginPage = () => {
             <ArrowRight className="w-4 h-4 ml-1" />
           </button>
         </form>
-
-        {/* Demo Auto-fill Helper */}
-        <div className="mt-6 pt-6 border-t border-slate-100 text-center">
-          <p className="text-xs text-slate-500 mb-2">Demo Admin Credentials:</p>
-          <div className="inline-block p-2.5 rounded-lg bg-slate-50 border border-slate-200 font-mono text-[11px] text-[#0088CC]">
-            admin@bloom.ng / admin123
-          </div>
-        </div>
       </div>
     </div>
   );

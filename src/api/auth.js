@@ -1,64 +1,88 @@
 import { fetchClient } from './client';
 
-export const authApi = {
-  // Login: POST /api/auth/login
-  async login(email, password) {
-    const res = await fetchClient('/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-    });
+const ADMIN_EMAIL = 'onuigboprecious47@gmail.com';
 
-    if (res && res.success) {
-      return res;
+export const authApi = {
+  // Login: POST /api/auth/login (integrates directly with infarbloom backend)
+  async login(email, password) {
+    const inputEmail = email?.toLowerCase().trim();
+
+    // 1. Send authentication request to infarbloom backend
+    let res;
+    try {
+      res = await fetchClient('/api/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      });
+    } catch (err) {
+      // Fallback endpoint check for /api/login
+      if (err.status === 404) {
+        res = await fetchClient('/api/login', {
+          method: 'POST',
+          body: JSON.stringify({ email, password }),
+        });
+      } else {
+        throw err;
+      }
     }
-    // Fallback demo credentials check
-    if (email === 'admin@bloom.ng' && password === 'admin123') {
-      return {
-        success: true,
-        data: {
-          id: 'ADM-001',
-          name: 'Chief Admin',
-          email: 'admin@bloom.ng',
-          role: 'admin',
-        },
-      };
+
+    if (res) {
+      const authData = res.data || res;
+      const authenticatedEmail = (authData.email || authData.user?.email || inputEmail)?.toLowerCase().trim();
+
+      // Enforce strict email permission check: ONLY onuigboprecious47@gmail.com
+      if (authenticatedEmail === ADMIN_EMAIL) {
+        return {
+          success: true,
+          data: {
+            id: authData.id || authData.user?.id || 'ADM-002',
+            name: authData.name || authData.user?.name || 'Precious Onuigbo',
+            email: ADMIN_EMAIL,
+            role: 'admin',
+          },
+        };
+      } else {
+        throw new Error(
+          `Access Denied: Account '${authenticatedEmail}' does not have Administrator privileges. Only ${ADMIN_EMAIL} is permitted.`
+        );
+      }
     }
-    if (email && password) {
-      return {
-        success: true,
-        data: {
-          id: 'ADM-DEMO',
-          name: email.split('@')[0] || 'Admin Operator',
-          email: email,
-          role: 'admin',
-        },
-      };
-    }
-    throw new Error('Invalid admin credentials');
+
+    throw new Error('Invalid authentication response from server');
   },
 
   // Session Check: GET /api/auth/me
   async me() {
-    const res = await fetchClient('/api/auth/me', { method: 'GET' });
-    if (res && res.success) {
-      return res;
+    try {
+      const res = await fetchClient('/api/auth/me', { method: 'GET' });
+      if (res && (res.success || res.email || res.data)) {
+        const authData = res.data || res;
+        const authenticatedEmail = (authData.email || authData.user?.email)?.toLowerCase().trim();
+
+        if (authenticatedEmail === ADMIN_EMAIL) {
+          return {
+            success: true,
+            data: {
+              id: authData.id || authData.user?.id || 'ADM-002',
+              name: authData.name || authData.user?.name || 'Precious Onuigbo',
+              email: ADMIN_EMAIL,
+              role: 'admin',
+            },
+          };
+        }
+      }
+    } catch (err) {
+      // Session invalid or unauthenticated
     }
-    return {
-      success: true,
-      data: {
-        id: 'ADM-001',
-        name: 'Chief Admin',
-        email: 'admin@bloom.ng',
-        role: 'admin',
-      },
-    };
+    return { success: false, user: null };
   },
 
   // Logout: POST /api/auth/logout
   async logout() {
-    const res = await fetchClient('/api/auth/logout', { method: 'POST' });
-    if (res && res.success) {
-      return res;
+    try {
+      await fetchClient('/api/auth/logout', { method: 'POST' });
+    } catch (err) {
+      // Ignore logout session clear errors
     }
     return { success: true, message: 'Logged out successfully' };
   },

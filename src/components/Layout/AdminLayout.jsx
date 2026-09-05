@@ -11,9 +11,10 @@ import {
   Cpu,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { InactivityWarningModal } from '../Common/InactivityWarningModal';
 
 export const AdminLayout = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, isIdleWarning, idleRemainingSeconds, extendSession } = useAuth();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -57,6 +58,14 @@ export const AdminLayout = () => {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 flex flex-col md:flex-row">
+      {/* Inactivity Auto-Logout Warning Modal */}
+      <InactivityWarningModal
+        isOpen={isIdleWarning}
+        remainingSeconds={idleRemainingSeconds}
+        onExtendSession={extendSession}
+        onLogout={handleLogout}
+      />
+
       {/* Mobile Top Header */}
       <div className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 sticky top-0 z-40">
         <div className="flex items-center gap-2">
@@ -144,8 +153,8 @@ export const AdminLayout = () => {
                 className="w-9 h-9 rounded-lg object-cover border border-slate-300"
               />
               <div className="overflow-hidden">
-                <p className="text-xs font-bold text-slate-900 truncate">{user?.name || 'Chief Admin'}</p>
-                <p className="text-[10px] text-[#00BCFF] font-mono truncate">Administrator</p>
+                <p className="text-xs font-bold text-slate-900 truncate">{user?.name || 'Precious Onuigbo'}</p>
+                <p className="text-[10px] text-[#0088CC] font-mono truncate">{user?.email || 'onuigboprecious47@gmail.com'}</p>
               </div>
             </div>
             <button
