@@ -70,10 +70,10 @@ export const AdminLayout = () => {
       <div className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 sticky top-0 z-40">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-[#00BCFF] flex items-center justify-center text-white font-extrabold text-sm">
-            B
+            E
           </div>
           <span className="font-bold tracking-tight text-slate-900 font-sans text-lg">
-            BLOOM <span className="text-[#00BCFF] text-xs font-mono uppercase px-1.5 py-0.5 rounded bg-cyan-50 border border-cyan-200 ml-1">ADMIN</span>
+            ENLAZER <span className="text-[#00BCFF] text-xs font-mono uppercase px-1.5 py-0.5 rounded bg-cyan-50 border border-cyan-200 ml-1">ADMIN</span>
           </span>
         </div>
         <button
@@ -94,12 +94,12 @@ export const AdminLayout = () => {
           {/* Brand Logo & Header */}
           <div className="flex items-center gap-3 px-2 py-4 mb-6 border-b border-slate-100">
             <div className="w-10 h-10 rounded-xl bg-[#00BCFF] flex items-center justify-center text-white font-black text-xl">
-              B
+              E
             </div>
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-extrabold text-lg text-slate-900 font-sans tracking-wide">
-                  BLOOM
+                  ENLAZER
                 </span>
                 <span className="text-[10px] font-mono font-semibold text-[#00BCFF] bg-cyan-50 px-1.5 py-0.5 rounded border border-cyan-200">
                   v2.4

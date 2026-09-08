@@ -31,9 +31,9 @@ export const LoginPage = () => {
         {/* Brand Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#0088CC] text-white font-black text-2xl mb-3">
-            B
+            E
           </div>
-          <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Bloom Admin Portal</h2>
+          <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Enlazer Admin Portal</h2>
           <p className="text-xs text-slate-500 font-mono mt-1">
             Hardware Inventory & Platform Operations
           </p>

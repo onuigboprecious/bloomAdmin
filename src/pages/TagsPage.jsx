@@ -616,7 +616,7 @@ export const TagsPage = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. BLM-88A92K-NFC"
+                  placeholder="e.g. ENZ-88A92K-NFC"
                   value={newCardUid}
                   onChange={(e) => setNewCardUid(e.target.value)}
                   className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono text-sm focus:outline-none focus:border-[#00BCFF]"

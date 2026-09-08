@@ -9,7 +9,7 @@ function generateSignature() {
 
 function generateCardUid() {
   const chars = '0123456789ABCDEF';
-  let uid = 'BLM-';
+  let uid = 'ENZ-';
   for (let i = 0; i < 6; i++) {
     uid += chars.charAt(Math.floor(Math.random() * chars.length));
   }
