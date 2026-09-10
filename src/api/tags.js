@@ -52,7 +52,7 @@ export const tagsApi = {
       signature: sig,
       finishName,
       status,
-      encodingUrl: `https://blm.link/card/${finalUid}?sig=${sig}`,
+      encodingUrl: `https://enlazer.cloud/card/${finalUid}?sig=${sig}`,
       createdAt: new Date().toISOString(),
       lastTapped: null,
       tapCount: 0,
@@ -79,7 +79,7 @@ export const tagsApi = {
       const normalizedCards = cardsList.map((c) => ({
         ...c,
         signature: c.signature || generateSignature(),
-        encodingUrl: c.encodingUrl || c.signedUrl || `https://blm.link/card/${c.cardUid}?sig=${c.signature || 'a9f4c3b2'}`,
+        encodingUrl: c.encodingUrl || c.signedUrl || `https://enlazer.cloud/card/${c.cardUid}?sig=${c.signature || 'a9f4c3b2'}`,
       }));
 
       return {
@@ -102,7 +102,7 @@ export const tagsApi = {
         signature: sig,
         finishName: finishName || `Default ${hardwareType}`,
         status: 'provisioned',
-        encodingUrl: `https://blm.link/card/${uid}?sig=${sig}`,
+        encodingUrl: `https://enlazer.cloud/card/${uid}?sig=${sig}`,
         createdAt: new Date().toISOString(),
         lastTapped: null,
         tapCount: 0,
@@ -138,7 +138,7 @@ export const tagsApi = {
         email: t.email || t.ownerEmail || t.userEmail || t.user_email || null,
         ownerName: t.ownerName || t.name || null,
         createdAt: t.createdAt || t.created_at || t.CreatedAt || null,
-        encodingUrl: t.encodingUrl || t.signedUrl || `https://www.enlazer.com.ng/card/${t.cardUid}?sig=${t.signature || ''}`,
+        encodingUrl: t.encodingUrl || t.signedUrl || `https://enlazer.cloud/card/${t.cardUid}?sig=${t.signature || ''}`,
         tapCount: t.tapsCount || t.tapCount || 0,
       }));
       return { success: true, data: normalized };
